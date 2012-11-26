@@ -3,3 +3,6 @@
 .project
 .classpath
 bin
+nbproject
+build.xml
+manifest.mf
