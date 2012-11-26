@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import starparty.library.InterstellarObject;
 import starparty.library.Player;
+import starparty.library.Weapon;
+import starparty.library.WeaponRange;
 import starparty.utilities.Distance;
 
 /**
@@ -24,6 +27,8 @@ public class Radar {
   int maxDistance = 500;
   Player player;
   List<InterstellarObject> objects = new ArrayList<InterstellarObject>();
+  WeaponManager weaponManager;
+  Image weaponRangeImage;
   
   // Calculated variables
   private int centerX;
@@ -31,9 +36,10 @@ public class Radar {
   private int gridSpace;
   private int gridLines = 10;
 
-  public Radar(Player player, List<InterstellarObject> objects) {
+  public Radar(Player player, List<InterstellarObject> objects, WeaponManager weaponManager) {
     this.player = player;
     this.objects = objects;
+    this.weaponManager = weaponManager;
     
     init();
   }
@@ -69,9 +75,18 @@ public class Radar {
     }
   }
   
+  public void setWeaponRangeImage(Image weaponRangeImage) {
+    this.weaponRangeImage = weaponRangeImage;
+  }
+  
   public void draw(Graphics g) {
     g.setColor(Color.darkGray);
     // g.fillRect(x, y, width, height);
+    
+    if (weaponManager.selectedWeapon != null) {
+      g.drawImage(weaponRangeImage, x, y);
+    }
+    
     drawGrid(g);
     
     g.setColor(Color.red);

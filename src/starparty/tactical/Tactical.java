@@ -7,6 +7,7 @@ import org.newdawn.slick.*;
 import starparty.library.InterstellarObject;
 import starparty.library.Player;
 import starparty.library.Weapon;
+import starparty.library.WeaponRange;
 import starparty.utilities.FontLoader;
 
 public class Tactical extends BasicGame {
@@ -51,6 +52,10 @@ public class Tactical extends BasicGame {
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
+    gc.getGraphics().setAntiAlias(true);
+    System.out.println(true);
+    
+    
     basicColor = new Color(100, 151, 244);
     basicFont = FontLoader.load("TCM_____.TTF", 25);
     
@@ -61,20 +66,28 @@ public class Tactical extends BasicGame {
 			interstellarObjects.add(new InterstellarObject(r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400));
 		}
     
-    radar = new Radar(player, interstellarObjects);
-    radar.setLocation(519, 71);
-    radar.setSize(500, 500);
+    Weapon w;
+    weapons.add(w = new Weapon("Phaser"));
+    w.addRange(new WeaponRange(200, 500, .25));
+    w.addRange(new WeaponRange(100, 200, .5));
+    w.addRange(new WeaponRange(50, 100, 1));
     
-    weapons.add(new Weapon("Phaser"));
-    weapons.add(new Weapon("Photon Torpedos"));
+    weapons.add(w = new Weapon("Photon Torpedos"));
+    w.addRange(new WeaponRange(300, 500, 1));
+    
     weapons.add(new Weapon("Laser"));
-    weapons.add(new Weapon("Qauntum Torpedo"));
+    weapons.add(new Weapon("Quantum Torpedo"));
     weapons.add(new Weapon("Planet Buster"));
     weapons.add(new Weapon("Machine Gun"));
     
     weaponManager = new WeaponManager(weapons);
     weaponManager.setLocation(150, 90);
     weaponManager.setSize(180, 600);
+    
+    radar = new Radar(player, interstellarObjects, weaponManager);
+    radar.setLocation(519, 71);
+    radar.setSize(500, 500);
+    weaponManager.setRadar(radar);
     
     background = new Image("resources/tactical/background.jpg");
 	}
@@ -86,6 +99,6 @@ public class Tactical extends BasicGame {
 
   @Override
   public void mousePressed(int button, int x, int y) {
-    super.mousePressed(button, x, y);
+    weaponManager.click(x, y);
   }
 }

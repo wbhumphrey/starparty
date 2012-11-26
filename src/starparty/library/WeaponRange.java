@@ -9,7 +9,13 @@ package starparty.library;
  * @author Tyler
  */
 public class WeaponRange {
-  int min;
-  int max;
-  float percentDamage;
+  public int min;
+  public int max;
+  public double percentDamage;
+  
+  public WeaponRange(int min, int max, double percentDamage) {
+    this.min = min;
+    this.max = max;
+    this.percentDamage = percentDamage;
+  }
 }

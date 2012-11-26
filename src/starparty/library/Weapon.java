@@ -13,10 +13,14 @@ import java.util.List;
  */
 public class Weapon {
   public String name;
-  List<WeaponRange> ranges = new ArrayList<WeaponRange>();
-  int damage;
+  public List<WeaponRange> ranges = new ArrayList<WeaponRange>();
+  public int damage;
   
   public Weapon(String name) {
     this.name = name;
+  }
+
+  public void addRange(WeaponRange weaponRange) {
+    ranges.add(weaponRange);
   }
 }
