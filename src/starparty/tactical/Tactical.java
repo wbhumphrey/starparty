@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.newdawn.slick.*;
-import starparty.library.InterstellarObject;
-import starparty.library.Player;
-import starparty.library.Weapon;
-import starparty.library.WeaponRange;
+import starparty.library.*;
 import starparty.utilities.FontLoader;
+import starparty.utilities.NameGenerator;
 
 public class Tactical extends BasicGame {
 	List<InterstellarObject> interstellarObjects = new ArrayList<InterstellarObject>();
@@ -18,10 +16,14 @@ public class Tactical extends BasicGame {
   
   Radar radar;
   WeaponManager weaponManager;
+  FiringControls firingControls;
   
   // Global styles
   public static Color basicColor;
+  public static Color backgroundColor;
+  public static UnicodeFont titleFont;
   public static UnicodeFont basicFont;
+  public static UnicodeFont smallFont;
   
   public Tactical() {
 		super("StarParty");
@@ -48,22 +50,25 @@ public class Tactical extends BasicGame {
     g.drawImage(background, 0, 0);
     radar.draw(g);
     weaponManager.draw(g);
+    firingControls.draw(g);
 	}
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
     gc.getGraphics().setAntiAlias(true);
-    System.out.println(true);
-    
     
     basicColor = new Color(100, 151, 244);
-    basicFont = FontLoader.load("TCM_____.TTF", 25);
+    backgroundColor = Color.black;
+    
+    basicFont = FontLoader.load("TCM_____.TTF", 30);
+    titleFont = FontLoader.load("TCM_____.TTF", 35, true);
+    smallFont = FontLoader.load("TCM_____.TTF", 15);
     
     Player player = new Player(0, 0, 0);
     
 		Random r = new Random();
 		for(int i = 1; i <= 20; i++){
-			interstellarObjects.add(new InterstellarObject(r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400));
+			interstellarObjects.add(new Ship(NameGenerator.generate("federation"), r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400));
 		}
     
     Weapon w;
@@ -75,18 +80,23 @@ public class Tactical extends BasicGame {
     weapons.add(w = new Weapon("Photon Torpedos"));
     w.addRange(new WeaponRange(300, 500, 1));
     
+    firingControls = new FiringControls();
+    firingControls.setLocation(107, 473);
+    firingControls.setSize(450, 214);
+    
     weapons.add(new Weapon("Laser"));
     weapons.add(new Weapon("Quantum Torpedo"));
     weapons.add(new Weapon("Planet Buster"));
     weapons.add(new Weapon("Machine Gun"));
     
     weaponManager = new WeaponManager(weapons);
-    weaponManager.setLocation(150, 90);
-    weaponManager.setSize(180, 600);
+    weaponManager.setLocation(120, 100);
+    weaponManager.setSize(300, 600);
+    weaponManager.setFiringControls(firingControls);
     
     radar = new Radar(player, interstellarObjects, weaponManager);
-    radar.setLocation(519, 71);
-    radar.setSize(500, 500);
+    radar.setLocation(608, 96);
+    radar.setSize(400, 400);
     weaponManager.setRadar(radar);
     
     background = new Image("resources/tactical/background.jpg");
@@ -100,5 +110,6 @@ public class Tactical extends BasicGame {
   @Override
   public void mousePressed(int button, int x, int y) {
     weaponManager.click(x, y);
+    firingControls.click(x, y);
   }
 }

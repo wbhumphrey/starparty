@@ -14,14 +14,15 @@ import org.newdawn.slick.font.effects.ColorEffect;
  * @author Tyler
  */
 public class FontLoader {
-  public static UnicodeFont load(String name, int size) {
+  public static UnicodeFont load(String name, int size, boolean bold) {
     UnicodeFont font = null;
     
     try {
       Font baseFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/" + name));
       baseFont.deriveFont(java.awt.Font.PLAIN, 12);
       
-      font = new UnicodeFont(baseFont.deriveFont(java.awt.Font.PLAIN, size));
+      int style = (bold ? java.awt.Font.BOLD : java.awt.Font.PLAIN);
+      font = new UnicodeFont(baseFont.deriveFont(style, size));
       font.addAsciiGlyphs();
       font.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
       font.loadGlyphs();
@@ -31,5 +32,9 @@ public class FontLoader {
     }
     
     return font;
+  }
+  
+  public static UnicodeFont load(String name, int size) {
+    return load(name, size, false);
   }
 }

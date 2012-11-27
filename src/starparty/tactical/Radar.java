@@ -24,17 +24,19 @@ public class Radar {
   int y;
   int width;
   int height;
-  int maxDistance = 500;
+  
   Player player;
   List<InterstellarObject> objects = new ArrayList<InterstellarObject>();
   WeaponManager weaponManager;
   Image weaponRangeImage;
   
   // Calculated variables
+  int maxDistance = 500;
+  private final int OBJECT_POINT_SIZE = 6;
   private int centerX;
   private int centerY;
   private int gridSpace;
-  private int gridLines = 10;
+  private int gridLines = 8;
 
   public Radar(Player player, List<InterstellarObject> objects, WeaponManager weaponManager) {
     this.player = player;
@@ -49,7 +51,7 @@ public class Radar {
     centerY = y + height / 2;
     gridSpace = width / gridLines / 2;
     
-    System.out.println("center: (" + centerX + ", " + centerY + ")");
+    // System.out.println("center: (" + centerX + ", " + centerY + ")");
   }
   
   public void setLocation(int x, int y) {
@@ -70,7 +72,7 @@ public class Radar {
     g.setColor(Tactical.basicColor);
     
     g.fillOval(centerX - 2, centerY - 2, 4, 4);
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < gridLines + 1; i++) {
       g.drawOval(centerX - gridSpace * i, centerY - gridSpace * i, gridSpace * i * 2, gridSpace * i * 2);
     }
   }
@@ -91,11 +93,16 @@ public class Radar {
     
     g.setColor(Color.red);
     for (InterstellarObject o: objects) {
-      float distance = Distance.calculate(player, o);
+      double distance = Distance.calculate(player, o);
+      int direction = o.hash(360);
       
       if (distance < maxDistance) {
-        float radarDistance = (distance / maxDistance) * (height / 2);
-        g.fillOval(centerX, (int) (centerY - radarDistance), 4, 4);
+        double radarDistance = (distance / maxDistance) * (height / 2);
+        double distanceX = Math.cos(Math.toRadians(direction)) * radarDistance;
+        double distanceY = Math.sin(Math.toRadians(direction)) * radarDistance;
+        // System.out.println("(" + distanceX + ", " + distanceY + ")");
+        // System.exit(0);
+        g.fillOval((int) (centerX - distanceX) - (OBJECT_POINT_SIZE / 2), (int) (centerY - distanceY) - (OBJECT_POINT_SIZE / 2), OBJECT_POINT_SIZE, OBJECT_POINT_SIZE);
       }
     }
   }

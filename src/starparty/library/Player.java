@@ -6,6 +6,6 @@ public class Player extends Ship {
 	public float speed = 1, angle = 0;
 	
 	public Player(float x, float y, float z) {
-		super(x, y, z);
+		super("USS Party", x, y, z);
 	}
 }

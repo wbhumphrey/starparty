@@ -25,9 +25,10 @@ public class WeaponManager {
   List<Weapon> weapons;
   Weapon selectedWeapon;
   Radar radar;
+  FiringControls firingControls;
   
   // Drawing constants
-  final int LINE_SIZE = 42;
+  final int LINE_SIZE = 46;
   final Color HEAVY_DAMAGE_COLOR = new Color(50, 0, 0);
   final Color MEDIUM_DAMAGE_COLOR = new Color(50, 50, 0);
   final Color LIGHT_DAMAGE_COLOR = new Color(0, 50, 0);
@@ -45,11 +46,11 @@ public class WeaponManager {
   }
   
   public void draw(Graphics g) {
-    g.setFont(Tactical.basicFont);
+    g.setFont(Tactical.titleFont);
     g.setColor(Tactical.basicColor);
-    
     g.drawString("WEAPONS", x, y);
     
+    g.setFont(Tactical.basicFont);
     for (int i = 0; i < weapons.size(); i++) {
       Weapon weapon = weapons.get(i);
       
@@ -69,6 +70,7 @@ public class WeaponManager {
   
   public void select(int i) {
     selectedWeapon = weapons.get(i);
+    firingControls.setWeapon(selectedWeapon);
     
     int width = radar.width;
     int height = radar.height;
@@ -96,7 +98,6 @@ public class WeaponManager {
           buffer.setColor(HEAVY_DAMAGE_COLOR);
         
         int radius = (int) (((0.0 + r.max) / radar.maxDistance) * (width / 2));
-        System.out.println(radius);
         int x = (width / 2) - radius;
         int y = (width / 2) - radius;
         
@@ -106,7 +107,6 @@ public class WeaponManager {
           buffer.setDrawMode(Graphics.MODE_ALPHA_MAP);
           buffer.setColor(Color.transparent);
           radius = (int) (((0.0 + r.min) / radar.maxDistance) * (width / 2));
-          System.out.println(radius);
           x = (width / 2) - radius;
           y = (width / 2) - radius;
 
@@ -150,5 +150,9 @@ public class WeaponManager {
   public void setSize(int width, int height) {
     this.width = width;
     this.height = height;
+  }
+
+  void setFiringControls(FiringControls firingControls) {
+    this.firingControls = firingControls;
   }
 }
