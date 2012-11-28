@@ -7,7 +7,7 @@ package starparty.tactical;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import starparty.component.Button;
-import starparty.component.ProgressBar;
+import starparty.component.StatusBar;
 import starparty.library.Weapon;
 
 /**
@@ -22,9 +22,9 @@ public class FiringControls {
   Weapon weapon;
   
   Button fireButton;
-  ProgressBar rechargeStatusBar;
-  ProgressBar damageStatusBar;
-  ProgressBar powerStatusBar;
+  StatusBar rechargeStatusBar;
+  StatusBar damageStatusBar;
+  StatusBar powerStatusBar;
   
   public void setLocation(int x, int y) {
     this.x = x;
@@ -41,22 +41,22 @@ public class FiringControls {
   }
   
   private void init() {
-    rechargeStatusBar = new ProgressBar("Recharge");
+    rechargeStatusBar = new StatusBar("Recharge");
     rechargeStatusBar.setLocation(x + 220, y + 40);
     rechargeStatusBar.setSize(width - 220, 25);
     
-    damageStatusBar = new ProgressBar("Damage");
+    damageStatusBar = new StatusBar("Damage");
     damageStatusBar.setLocation(x + 220, y + 70);
     damageStatusBar.setSize(width - 220, 25);
 
-    powerStatusBar = new ProgressBar("Power");
+    powerStatusBar = new StatusBar("Power");
     powerStatusBar.setLocation(x + 220, y + 100);
     powerStatusBar.setSize(width - 220, 25);
     
     fireButton = new Button("Fire") {
       @Override
       public void click() {
-        if (weapon.getTimeUntilFire() == 0) {
+        if (weapon.canFire()) {
           weapon.fire();
           System.out.println("Fire!!!");
         }
@@ -78,8 +78,8 @@ public class FiringControls {
       g.setColor(Tactical.basicColor);
       g.drawString(weapon.name, x + 220, y);
 
-      // rechargeStatusBar.draw(g, 0, weapon.cooldown, (int) weapon.getTimeUntilFire());
-      rechargeStatusBar.draw(g, 0, 100, 100);
+      rechargeStatusBar.draw(g, 0, weapon.cooldown, (int) weapon.getCurrentCooldown());
+      // rechargeStatusBar.draw(g, 0, 100, 100);
       damageStatusBar.draw(g, 0, 100, 100);
       powerStatusBar.draw(g, 0, 100, 100);
       

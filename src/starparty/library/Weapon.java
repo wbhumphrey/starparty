@@ -35,9 +35,13 @@ public class Weapon {
     this.cooldown = cooldown;
   }
   
-  public long getTimeUntilFire() {
+  public boolean canFire() {
+    return getCurrentCooldown() == cooldown;
+  }
+  
+  public long getCurrentCooldown() {
     long timeSinceLastFired = System.currentTimeMillis() - lastFired;
-    return Math.min(0, cooldown - timeSinceLastFired);
+    return Math.min(cooldown, timeSinceLastFired);
   }
 
   public void addRange(WeaponRange weaponRange) {

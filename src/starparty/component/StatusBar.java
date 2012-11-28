@@ -12,7 +12,7 @@ import starparty.tactical.Tactical;
  *
  * @author Tyler
  */
-public class ProgressBar {
+public class StatusBar {
   String label;
   int x;
   int y;
@@ -22,7 +22,7 @@ public class ProgressBar {
   private final int BORDER = 2;
   private final int PADDING = 2;
   
-  public ProgressBar(String label) {
+  public StatusBar(String label) {
     this.label = label;
   }
   
