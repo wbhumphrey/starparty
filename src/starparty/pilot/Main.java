@@ -76,7 +76,7 @@ public class Main extends BasicGame {
 		// TODO Auto-generated method stub
 		Random r = new Random();
 		for(int i = 1; i <= 1000; i++){
-			interstellarObjects.add(new InterstellarObject(NameGenerator.generate("federation"), r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400));
+			interstellarObjects.add(new InterstellarObject(NameGenerator.generate("ship", "federation"), r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400));
 		}
 	}
 

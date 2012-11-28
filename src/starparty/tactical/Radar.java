@@ -9,10 +9,9 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Circle;
 import starparty.library.InterstellarObject;
 import starparty.library.Player;
-import starparty.library.Weapon;
-import starparty.library.WeaponRange;
 import starparty.utilities.Distance;
 
 /**
@@ -28,6 +27,8 @@ public class Radar {
   Player player;
   List<InterstellarObject> objects = new ArrayList<InterstellarObject>();
   WeaponManager weaponManager;
+  InterstellarObjectStatus objectStatus;
+  InterstellarObject selectedObject;
   Image weaponRangeImage;
   
   // Calculated variables
@@ -38,12 +39,19 @@ public class Radar {
   private int gridSpace;
   private int gridLines = 8;
 
-  public Radar(Player player, List<InterstellarObject> objects, WeaponManager weaponManager) {
+  public Radar(Player player, List<InterstellarObject> objects) {
     this.player = player;
     this.objects = objects;
-    this.weaponManager = weaponManager;
     
     init();
+  }
+  
+  public void setWeaponManager(WeaponManager weaponManager) {
+    this.weaponManager = weaponManager;
+  }
+  
+  public void setInterstellarObjectStatus(InterstellarObjectStatus objectStatus) {
+    this.objectStatus = objectStatus;
   }
   
   private void init() {
@@ -100,10 +108,40 @@ public class Radar {
         double radarDistance = (distance / maxDistance) * (height / 2);
         double distanceX = Math.cos(Math.toRadians(direction)) * radarDistance;
         double distanceY = Math.sin(Math.toRadians(direction)) * radarDistance;
-        // System.out.println("(" + distanceX + ", " + distanceY + ")");
-        // System.exit(0);
-        g.fillOval((int) (centerX - distanceX) - (OBJECT_POINT_SIZE / 2), (int) (centerY - distanceY) - (OBJECT_POINT_SIZE / 2), OBJECT_POINT_SIZE, OBJECT_POINT_SIZE);
+        
+        if (o == selectedObject) {
+          g.setColor(Color.yellow);
+          g.fillOval((int) (centerX - distanceX) - 14, (int) (centerY - distanceY) - 14, 28, 28);
+          g.setColor(Color.red);
+        }
+        
+        g.drawImage(o.icon, (int) (centerX - distanceX) - 12, (int) (centerY - distanceY) - 12);
+        // g.fillOval((int) (centerX - distanceX) - (OBJECT_POINT_SIZE / 2), (int) (centerY - distanceY) - (OBJECT_POINT_SIZE / 2), OBJECT_POINT_SIZE, OBJECT_POINT_SIZE);
       }
     }
+  }
+  
+  public boolean click(int x, int y) {
+    Circle c = new Circle(0, 0, 12);
+    
+    for (InterstellarObject o: objects) {
+      double distance = Distance.calculate(player, o);
+      int direction = o.hash(360);
+      
+      if (distance < maxDistance) {
+        double radarDistance = (distance / maxDistance) * (height / 2);
+        double distanceX = Math.cos(Math.toRadians(direction)) * radarDistance;
+        double distanceY = Math.sin(Math.toRadians(direction)) * radarDistance;
+        
+        c.setLocation((int) (centerX - distanceX), (int) (centerY - distanceY));
+        if (c.contains(x, y)) {
+          selectedObject = o;
+          objectStatus.setInterstellarObject(o);
+          return true;
+        }
+      }
+    }
+    
+    return false;
   }
 }

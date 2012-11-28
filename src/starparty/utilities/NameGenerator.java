@@ -20,12 +20,13 @@ public class NameGenerator {
   private static Random r = new Random();
   private static Map<String, String[]> nameCache = new HashMap<String, String[]>();
   
-  public static String generate(String organization) {
-    String[] names = nameCache.get(organization);
+  public static String generate(String type, String organization) {
+    String id = type + "*" + organization;
+    String[] names = nameCache.get(id);
     
     if (names == null) {
       try {
-        FileReader fileReader = new FileReader("resources/ship_names/" + organization + ".txt");
+        FileReader fileReader = new FileReader("resources/interstellar_object/" + type + "/" + organization + ".txt");
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         
         List<String> lines = new ArrayList<String>();
@@ -35,7 +36,7 @@ public class NameGenerator {
         }
         
         bufferedReader.close();
-        nameCache.put(organization, names = lines.toArray(new String[lines.size()]));
+        nameCache.put(id, names = lines.toArray(new String[lines.size()]));
       } catch (Exception e) {
         System.out.println("Error reading in ship names: " + organization);
         e.printStackTrace();

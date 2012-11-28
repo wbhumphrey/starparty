@@ -6,6 +6,7 @@ import java.util.Random;
 import org.newdawn.slick.*;
 import starparty.library.*;
 import starparty.utilities.FontLoader;
+import starparty.utilities.InterstellarObjectFactory;
 import starparty.utilities.NameGenerator;
 
 public class Tactical extends BasicGame {
@@ -17,6 +18,7 @@ public class Tactical extends BasicGame {
   Radar radar;
   WeaponManager weaponManager;
   FiringControls firingControls;
+  InterstellarObjectStatus objectStatus;
   
   // Global styles
   public static Color basicColor;
@@ -51,6 +53,7 @@ public class Tactical extends BasicGame {
     radar.draw(g);
     weaponManager.draw(g);
     firingControls.draw(g);
+    objectStatus.draw(g);
 	}
 
 	@Override
@@ -64,11 +67,19 @@ public class Tactical extends BasicGame {
     titleFont = FontLoader.load("TCM_____.TTF", 35, true);
     smallFont = FontLoader.load("TCM_____.TTF", 15);
     
-    Player player = new Player(0, 0, 0);
+    player = new Player(0, 0, 0);
     
 		Random r = new Random();
-		for(int i = 1; i <= 20; i++){
-			interstellarObjects.add(new Ship(NameGenerator.generate("federation"), r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400));
+		for(int i = 1; i <= 5; i++){
+      InterstellarObject o = InterstellarObjectFactory.geteratePlanet("federation");
+      o.setLocation(r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400);
+			interstellarObjects.add(o);
+		}
+    
+		for(int i = 1; i <= 15; i++){
+      InterstellarObject o = InterstellarObjectFactory.geterateShip("federation");
+      o.setLocation(r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400);
+			interstellarObjects.add(o);
 		}
     
     Weapon w;
@@ -94,7 +105,13 @@ public class Tactical extends BasicGame {
     weaponManager.setSize(300, 600);
     weaponManager.setFiringControls(firingControls);
     
-    radar = new Radar(player, interstellarObjects, weaponManager);
+    objectStatus = new InterstellarObjectStatus();
+    objectStatus.setLocation(608, 540);
+    objectStatus.setSize(400, 146);
+    
+    radar = new Radar(player, interstellarObjects);
+    radar.setWeaponManager(weaponManager);
+    radar.setInterstellarObjectStatus(objectStatus);
     radar.setLocation(608, 96);
     radar.setSize(400, 400);
     weaponManager.setRadar(radar);
@@ -108,8 +125,14 @@ public class Tactical extends BasicGame {
 	}
 
   @Override
+  public void keyPressed(int key, char c) {
+    player.x += 20;
+  }
+  
+  @Override
   public void mousePressed(int button, int x, int y) {
     weaponManager.click(x, y);
     firingControls.click(x, y);
+    radar.click(x, y);
   }
 }

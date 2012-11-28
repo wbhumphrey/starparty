@@ -1,8 +1,14 @@
 package starparty.library;
 
+import org.newdawn.slick.Image;
+
 public class InterstellarObject {
-  String name;         
+  public String name;         
+  public String type;
+  public String organization;
 	public float x, y, z;
+  public Image portrait;
+  public Image icon;
 
 	public InterstellarObject(String name, float x, float y, float z) {
     this.name = name;
@@ -10,6 +16,12 @@ public class InterstellarObject {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+  }
+  
+  public void setLocation(float x, float y, float z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
   }
   
   public int hash(int mod) {

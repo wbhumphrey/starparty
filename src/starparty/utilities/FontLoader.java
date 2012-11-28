@@ -18,7 +18,7 @@ public class FontLoader {
     UnicodeFont font = null;
     
     try {
-      Font baseFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/" + name));
+      Font baseFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/font/" + name));
       baseFont.deriveFont(java.awt.Font.PLAIN, 12);
       
       int style = (bold ? java.awt.Font.BOLD : java.awt.Font.PLAIN);
