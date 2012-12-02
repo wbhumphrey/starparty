@@ -85,11 +85,11 @@ public class Main extends BasicGame {
 		// TODO Auto-generated method stub
 		if(player.moving){
 			if(player.mLeft)player.angle -= player.speed;
-			if(player.mUp)player.z += player.speed;
+			if(player.mUp)player.ship.z += player.speed;
 			if(player.mRight)player.angle += player.speed;
-			if(player.mDown)player.z -= player.speed;
-			player.x += Math.cos(Math.toRadians(player.angle));
-			player.y += Math.sin(Math.toRadians(player.angle));
+			if(player.mDown)player.ship.z -= player.speed;
+			player.ship.x += Math.cos(Math.toRadians(player.angle));
+			player.ship.y += Math.sin(Math.toRadians(player.angle));
 		}
 		//System.out.println(player.y);
 		

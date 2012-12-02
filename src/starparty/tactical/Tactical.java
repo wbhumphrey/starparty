@@ -10,125 +10,137 @@ import starparty.utilities.InterstellarObjectFactory;
 import starparty.utilities.NameGenerator;
 
 public class Tactical extends BasicGame {
-	List<InterstellarObject> interstellarObjects = new ArrayList<InterstellarObject>();
+
+  List<InterstellarObject> interstellarObjects = new ArrayList<InterstellarObject>();
   List<Weapon> weapons = new ArrayList<Weapon>();
   Player player;
   Image background;
-  
   Radar radar;
   WeaponManager weaponManager;
   FiringControls firingControls;
   InterstellarObjectStatus objectStatus;
   
+  Target target = new Target();
   // Global styles
   public static Color basicColor;
   public static Color backgroundColor;
   public static UnicodeFont titleFont;
   public static UnicodeFont basicFont;
   public static UnicodeFont smallFont;
-  
+
   public Tactical() {
-		super("StarParty");
-	}
+    super("StarParty");
+  }
 
-	public static void main(String ... args){
-		try {
-			System.out.println(new java.io.File( "." ).getCanonicalPath());
-      
-			AppGameContainer app = new AppGameContainer(new Tactical());
-			app.setDisplayMode(1024, 700, false);
-			app.setSmoothDeltas(true);
-			app.setTargetFrameRate(60);
-			app.setShowFPS(true);
-			app.start();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+  public static void main(String... args) {
+    try {
+      System.out.println(new java.io.File(".").getCanonicalPath());
 
-	@Override
-	public void render(GameContainer container, Graphics g) throws SlickException {
+      AppGameContainer app = new AppGameContainer(new Tactical());
+      app.setDisplayMode(1024, 700, false);
+      app.setSmoothDeltas(true);
+      app.setTargetFrameRate(60);
+      app.setShowFPS(true);
+      app.start();
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void render(GameContainer container, Graphics g) throws SlickException {
     g.drawImage(background, 0, 0);
     radar.draw(g);
     weaponManager.draw(g);
     firingControls.draw(g);
     objectStatus.draw(g);
-	}
+  }
 
-	@Override
-	public void init(GameContainer gc) throws SlickException {
+  @Override
+  public void init(GameContainer gc) throws SlickException {
     gc.getGraphics().setAntiAlias(true);
-    
+
     basicColor = new Color(100, 151, 244);
     backgroundColor = Color.black;
-    
+
     basicFont = FontLoader.load("TCM_____.TTF", 30);
     titleFont = FontLoader.load("TCM_____.TTF", 35, true);
     smallFont = FontLoader.load("TCM_____.TTF", 15);
-    
+
     player = new Player(0, 0, 0);
-    
-		Random r = new Random();
-		for(int i = 1; i <= 5; i++){
-      InterstellarObject o = InterstellarObjectFactory.geteratePlanet("federation");
+
+    Random r = new Random();
+    for (int i = 1; i <= 5; i++) {
+      InterstellarObject o = InterstellarObjectFactory.generatePlanet("federation");
       o.setLocation(r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400);
-			interstellarObjects.add(o);
-		}
-    
-		for(int i = 1; i <= 15; i++){
-      InterstellarObject o = InterstellarObjectFactory.geterateShip("federation");
+      interstellarObjects.add(o);
+    }
+
+    for (int i = 1; i <= 15; i++) {
+      InterstellarObject o = InterstellarObjectFactory.generateShip("federation");
       o.setLocation(r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400);
-			interstellarObjects.add(o);
-		}
-    
+      interstellarObjects.add(o);
+    }
+
     Weapon w;
     weapons.add(w = new Weapon("Phaser"));
-    w.addRange(new WeaponRange(200, 500, .25));
-    w.addRange(new WeaponRange(100, 200, .5));
-    w.addRange(new WeaponRange(50, 100, 1));
-    
+    w.shieldDamage = 100;
+    w.hullDamage = 0;
+    w.addRange(new WeaponRange(0, 100, 1));
+    w.addRange(new WeaponRange(101, 200, .5));
+    w.addRange(new WeaponRange(201, 500, .25));
+
     weapons.add(w = new Weapon("Photon Torpedos"));
+    w.shieldDamage = 25;
+    w.hullDamage = 100;
+    w.shieldDamageReduction = .5;
     w.addRange(new WeaponRange(300, 500, 1));
-    
-    firingControls = new FiringControls();
+
+    weapons.add(w = new Weapon("Rail Gun"));
+    w.shieldDamage = 10;
+    w.hullDamage = 50;
+    w.shieldDamageReduction = 1;
+    w.addRange(new WeaponRange(0, 500, 1));
+    w.addRange(new WeaponRange(501, 1000, .5));
+
+    firingControls = new FiringControls(player.ship, target);
     firingControls.setLocation(107, 473);
     firingControls.setSize(450, 214);
-    
-    weapons.add(new Weapon("Laser"));
-    weapons.add(new Weapon("Quantum Torpedo"));
-    weapons.add(new Weapon("Planet Buster"));
-    weapons.add(new Weapon("Machine Gun"));
-    
+
+    //weapons.add(new Weapon("Laser"));
+    //weapons.add(new Weapon("Quantum Torpedo"));
+    //weapons.add(new Weapon("Planet Buster"));
+    //weapons.add(new Weapon("Machine Gun"));
+
     weaponManager = new WeaponManager(weapons);
     weaponManager.setLocation(120, 100);
     weaponManager.setSize(300, 600);
     weaponManager.setFiringControls(firingControls);
-    
+
     objectStatus = new InterstellarObjectStatus();
     objectStatus.setLocation(608, 540);
     objectStatus.setSize(400, 146);
-    
-    radar = new Radar(player, interstellarObjects);
+
+    radar = new Radar(player, interstellarObjects, target);
     radar.setWeaponManager(weaponManager);
     radar.setInterstellarObjectStatus(objectStatus);
     radar.setLocation(608, 96);
     radar.setSize(400, 400);
     weaponManager.setRadar(radar);
-    
+
     background = new Image("resources/tactical/background.jpg");
-	}
+  }
 
-	@Override
-	public void update(GameContainer gc, int delta) throws SlickException {
-
-	}
+  @Override
+  public void update(GameContainer gc, int delta) throws SlickException {
+  }
 
   @Override
   public void keyPressed(int key, char c) {
-    player.x += 20;
+    player.ship.x += 20;
   }
-  
+
   @Override
   public void mousePressed(int button, int x, int y) {
     weaponManager.click(x, y);

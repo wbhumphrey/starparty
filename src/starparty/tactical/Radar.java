@@ -28,7 +28,7 @@ public class Radar {
   List<InterstellarObject> objects = new ArrayList<InterstellarObject>();
   WeaponManager weaponManager;
   InterstellarObjectStatus objectStatus;
-  InterstellarObject selectedObject;
+  Target target;
   Image weaponRangeImage;
   
   // Calculated variables
@@ -39,9 +39,10 @@ public class Radar {
   private int gridSpace;
   private int gridLines = 8;
 
-  public Radar(Player player, List<InterstellarObject> objects) {
+  public Radar(Player player, List<InterstellarObject> objects, Target target) {
     this.player = player;
     this.objects = objects;
+    this.target = target;
     
     init();
   }
@@ -101,15 +102,15 @@ public class Radar {
     
     g.setColor(Color.red);
     for (InterstellarObject o: objects) {
-      double distance = Distance.calculate(player, o);
+      double distance = Distance.calculate(player.ship, o);
       int direction = o.hash(360);
       
-      if (distance < maxDistance) {
+      if (distance < maxDistance && !o.isDestroyed()) {
         double radarDistance = (distance / maxDistance) * (height / 2);
         double distanceX = Math.cos(Math.toRadians(direction)) * radarDistance;
         double distanceY = Math.sin(Math.toRadians(direction)) * radarDistance;
         
-        if (o == selectedObject) {
+        if (o == target.getTarget()) {
           g.setColor(Color.yellow);
           g.fillOval((int) (centerX - distanceX) - 14, (int) (centerY - distanceY) - 14, 28, 28);
           g.setColor(Color.red);
@@ -125,7 +126,7 @@ public class Radar {
     Circle c = new Circle(0, 0, 12);
     
     for (InterstellarObject o: objects) {
-      double distance = Distance.calculate(player, o);
+      double distance = Distance.calculate(player.ship, o);
       int direction = o.hash(360);
       
       if (distance < maxDistance) {
@@ -135,7 +136,7 @@ public class Radar {
         
         c.setLocation((int) (centerX - distanceX), (int) (centerY - distanceY));
         if (c.contains(x, y)) {
-          selectedObject = o;
+          target.setTarget(o);
           objectStatus.setInterstellarObject(o);
           return true;
         }

@@ -6,24 +6,32 @@ package starparty.component;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.geom.Rectangle;
 import starparty.tactical.Tactical;
+import starparty.utilities.FontLoader;
 
 /**
  *
  * @author Tyler
  */
 public abstract class Button {
-  String label;
+  public String label;
   int x;
   int y;
   int width;
   int height;
+  public Color color = new Color(100, 151, 244);
+  public UnicodeFont font = FontLoader.load("TCM_____.TTF", 35, true);
   
   private final Rectangle r = new Rectangle(0, 0, 0, 0);
   
   public Button(String label) {
     this.label = label;
+  }
+  
+  public void setColor() {
+    
   }
   
   public void setLocation(int x, int y) {
@@ -55,12 +63,12 @@ public abstract class Button {
   }
   
   public void draw(Graphics g) {
-    g.setColor(Tactical.basicColor);
+    g.setColor(color);
     g.fillRect(x, y, width, height);
 
-    g.setFont(Tactical.titleFont);
+    g.setFont(font);
     g.setColor(Color.black);
-    g.drawString("FIRE", x + 10, y + 10);
+    g.drawString(label, x + 10, y + 10);
   }
   
   public abstract void click();

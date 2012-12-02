@@ -25,6 +25,7 @@ public class WeaponManager {
   List<Weapon> weapons;
   Weapon selectedWeapon;
   Radar radar;
+  Target target;
   FiringControls firingControls;
   
   // Drawing constants
@@ -43,6 +44,10 @@ public class WeaponManager {
   
   public void setRadar(Radar radar) {
     this.radar = radar;
+  }
+  
+  public void setTarget(Target target){
+    this.target = target;
   }
   
   public void draw(Graphics g) {
