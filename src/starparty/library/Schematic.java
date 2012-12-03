@@ -23,6 +23,7 @@ public class Schematic {
     
     for (Node node: nodes) {
       shipNodes.put(node.id, shipNode = new ShipNode());
+      shipNode.id = node.id;
       shipNode.setLocation(node.x, node.y);
     }
     

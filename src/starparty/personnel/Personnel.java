@@ -6,8 +6,11 @@ package starparty.personnel;
 
 import com.google.gson.Gson;
 import java.io.FileReader;
+import java.util.List;
 import org.newdawn.slick.*;
 import starparty.library.Schematic;
+import starparty.library.ShipInternals;
+import starparty.library.ShipNode;
 import starparty.utilities.ImageLoader;
 
 /**
@@ -17,6 +20,7 @@ import starparty.utilities.ImageLoader;
 public class Personnel extends BasicGame {
   Image background;
   Schematic schematic;
+  ShipInternals shipInternals;
   
   public Personnel() {
     super("StarParty");
@@ -46,6 +50,10 @@ public class Personnel extends BasicGame {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    
+    shipInternals = schematic.getShipInternals();
+    List<ShipNode> path = shipInternals.getPath(8, 12);
+    System.out.println(path);
   }
 
   @Override
@@ -59,6 +67,7 @@ public class Personnel extends BasicGame {
     g.setColor(Color.red);
     for (Schematic.Node node: schematic.nodes) {
       g.fillOval(120 + node.getX() - 1, 261 + node.getY() - 2, 4, 4);
+      g.drawString("" + node.getId(), 120 + node.getX(), 261 + node.getY());
     }
   }
 }

@@ -22,4 +22,8 @@ public class ShipPath {
   ShipNode getEnd(ShipNode current) {
     return (current == start ? end : start);
   }
+
+  ShipNode getDestination(ShipNode currentNode) {
+    return currentNode == start ? end : start;
+  }
 }

@@ -12,12 +12,17 @@ import java.util.List;
  * @author Tyler
  */
 public class ShipNode {
-  int x;
-  int y;
-  List<ShipPath> paths = new ArrayList<ShipPath>();
+  public int id;
+  public int x;
+  public int y;
+  public List<ShipPath> paths = new ArrayList<ShipPath>();
   
   public void setLocation(int x, int y) {
     this.x = x;
     this.y = y;
+  }
+  
+  public String toString() {
+    return id + "";
   }
 }
