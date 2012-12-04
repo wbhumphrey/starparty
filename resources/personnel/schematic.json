@@ -76,6 +76,6 @@
     {"id": "security", "x": 652, "y": 59, "name": "Security Office"},
     {"id": "torpedoes", "x": 638, "y": 202, "name": "Torpedo Launcher"},
     {"id": "quarters 1", "x": 672, "y": 103, "name": "Primary Crew Quarters"},
-    {"id": "quarters 2", "x": 668, "y": 1668, "name": "Secondary Crew Quarters"},
+    {"id": "quarters 2", "x": 668, "y": 1668, "name": "Secondary Crew Quarters"}
   ]
 }

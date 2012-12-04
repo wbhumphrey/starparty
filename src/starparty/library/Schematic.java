@@ -4,6 +4,7 @@
  */
 package starparty.library;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,12 +20,27 @@ public class Schematic {
   
   public ShipInternals getShipInternals() {
     Map<Integer, ShipNode> shipNodes = new HashMap<Integer, ShipNode>();
-    ShipNode shipNode;
+    List<ShipRoom> shipRooms = new ArrayList<ShipRoom>();
+    
+    Map<String, ShipRoom> roomsById = new HashMap<String, ShipRoom>();
+    
+    System.out.println(rooms);
+    for (Room room: rooms) {
+      ShipRoom shipRoom = new ShipRoom(room.id, room.name);
+      shipRooms.add(shipRoom);
+      shipRoom.setLocation(room.x, room.y);
+      roomsById.put(room.id, shipRoom);
+    }
     
     for (Node node: nodes) {
+      ShipNode shipNode;
       shipNodes.put(node.id, shipNode = new ShipNode());
       shipNode.id = node.id;
       shipNode.setLocation(node.x, node.y);
+      
+      for (String roomId: node.getRooms()) {
+        roomsById.get(roomId).node = shipNode;
+      }
     }
     
     for (Path path: paths) {
@@ -37,7 +53,9 @@ public class Schematic {
     }
     
     ShipInternals internals = new ShipInternals();
-    internals.shipNodes = shipNodes;
+    internals.nodes = shipNodes;
+    internals.rooms = shipRooms;
+    
     return internals;
   }
 

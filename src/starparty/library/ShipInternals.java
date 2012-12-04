@@ -12,17 +12,18 @@ import java.util.*;
  */
 public class ShipInternals {
 
-  public Map<Integer, ShipNode> shipNodes;
+  public Map<Integer, ShipNode> nodes;
+  public List<ShipRoom> rooms;
 
   public List<ShipNode> getPath(int start, int end) {
     PriorityQueue<PartialPath> unmarkedPaths = new PriorityQueue<PartialPath>();
     Set<ShipNode> unmarkedNodes = new HashSet<ShipNode>();
     Map<ShipNode, PartialPath> nodePathLink = new HashMap<ShipNode, PartialPath>();
 
-    ShipNode startNode = shipNodes.get(start);
-    ShipNode endNode = shipNodes.get(end);
+    ShipNode startNode = nodes.get(start);
+    ShipNode endNode = nodes.get(end);
 
-    for (ShipNode node : shipNodes.values()) {
+    for (ShipNode node : nodes.values()) {
       PartialPath unmarkedPath = new PartialPath(node);
 
       if (node == startNode) {

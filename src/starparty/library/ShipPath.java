@@ -9,14 +9,17 @@ package starparty.library;
  * @author Tyler
  */
 public class ShipPath {
-  ShipNode start;
-  ShipNode end;
-  int cost;
+  public ShipNode start;
+  public ShipNode end;
+  public int cost;
   
   public ShipPath(ShipNode start, ShipNode end, int cost) {
     this.start = start;
     this.end = end;
     this.cost = cost;
+  }
+
+  ShipPath() {
   }
 
   ShipNode getEnd(ShipNode current) {
@@ -25,5 +28,9 @@ public class ShipPath {
 
   ShipNode getDestination(ShipNode currentNode) {
     return currentNode == start ? end : start;
+  }
+  
+  public boolean has(ShipNode node) {
+    return start == node || end == node;
   }
 }

@@ -25,4 +25,13 @@ public class ShipNode {
   public String toString() {
     return id + "";
   }
+
+  int getCost(ShipNode end) {
+    for (ShipPath path: paths) {
+      if (path.has(end))
+        return path.cost;
+    }
+    
+    return -1;
+  }
 }
