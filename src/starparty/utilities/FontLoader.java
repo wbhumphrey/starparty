@@ -6,6 +6,8 @@ package starparty.utilities;
 
 import java.awt.Font;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 
@@ -14,8 +16,15 @@ import org.newdawn.slick.font.effects.ColorEffect;
  * @author Tyler
  */
 public class FontLoader {
+  private static Map<String, UnicodeFont> cache = new HashMap<String, UnicodeFont>();
+  
   public static UnicodeFont load(String name, int size, boolean bold) {
+    String id = name + "-" + size + "-" + bold;
     UnicodeFont font = null;
+    
+    if (cache.containsKey(id)) {
+      return cache.get(id);
+    }
     
     try {
       Font baseFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/font/" + name));
@@ -31,6 +40,7 @@ public class FontLoader {
       e.printStackTrace();
     }
     
+    cache.put(id, font);
     return font;
   }
   
