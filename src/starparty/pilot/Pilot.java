@@ -22,8 +22,8 @@ public class Pilot extends BasicGame {
   List<InterstellarObject> interstellarObjects = new ArrayList<InterstellarObject>();
   //Not Temporary
   Player player = new Player(0, 0, 0);
-  Viewscreen viewPortXY = new Viewscreen(player, 10, 10, 400, 400, true, interstellarObjects);
-  Viewscreen viewPortYZ = new Viewscreen(player, 520, 10, 400, 400, false, interstellarObjects);
+  Viewscreen viewPortXY;
+  Viewscreen viewPortYZ;
 
   public Pilot() {
     super("StarParty");
@@ -85,6 +85,8 @@ public class Pilot extends BasicGame {
   @Override
   public void init(GameContainer arg0) throws SlickException {
     // TODO Auto-generated method stub
+  viewPortXY = new Viewscreen(player, 10, 10, 400, 400, true, interstellarObjects);
+  viewPortYZ = new Viewscreen(player, 520, 10, 400, 400, false, interstellarObjects);
     Random r = new Random();
     for (int i = 1; i <= 1000; i++) {
       interstellarObjects.add(new InterstellarObject(NameGenerator.generate("ship", "federation"), r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400));
