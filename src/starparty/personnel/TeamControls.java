@@ -6,8 +6,8 @@ package starparty.personnel;
 
 import org.newdawn.slick.Graphics;
 import starparty.component.Button;
-import starparty.library.Schematic.Room;
 import starparty.library.ShipInternals;
+import starparty.library.ShipNode;
 import starparty.library.ShipRoom;
 import starparty.library.Team;
 
@@ -22,7 +22,7 @@ public class TeamControls {
   int height;
   
   Team selectedTeam;
-  ShipRoom selectedRoom;
+  ShipNode selectedNode;
   Button move;
   Button move2;
   Button stop;
@@ -33,10 +33,10 @@ public class TeamControls {
     move = new Button("Move") {
       @Override
       public void click() {
-        boolean validRoom = selectedRoom != null;
+        boolean validRoom = selectedNode != null;
         
-        if (validRoom && selectedTeam.location.id != selectedRoom.node.id)
-          selectedTeam.move(shipInternals.getPath(selectedTeam.location.id, selectedRoom.node.id));
+        if (validRoom && selectedTeam.location.id != selectedNode.id)
+          selectedTeam.move(shipInternals.getPath(selectedTeam.location.id, selectedNode.id));
       }      
     };
     
@@ -101,7 +101,7 @@ public class TeamControls {
     stop.click(x, y);
   }
 
-  void setSelectedRoom(ShipRoom room) {
-    this.selectedRoom = room;
+  void setSelectedNode(ShipNode node) {
+    this.selectedNode = node;
   }
 }

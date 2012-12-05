@@ -9,6 +9,7 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
+import starparty.component.FixedCircle;
 import starparty.component.Tooltip;
 import starparty.library.*;
 
@@ -24,10 +25,16 @@ public class PersonnelDisplay {
   List<Team> teams;
   ShipInternals shipInternals;
   List<Tooltip> tooltips;
+  ShipNode selectedNode;
+  TeamControls teamControls;
   
   public PersonnelDisplay(ShipInternals shipInternals, List<Team> teams) {
     this.shipInternals = shipInternals;
     this.teams = teams;
+  }
+  
+  public void setTeamControls(TeamControls teamControls) {
+    this.teamControls = teamControls;
   }
   
   public void setLocation(int x, int y) {
@@ -50,9 +57,8 @@ public class PersonnelDisplay {
     for (ShipRoom room: shipInternals.rooms) {
       Tooltip t;
       tooltips.add(t = new Tooltip(room.name));
-      t.setTriggerLocation(new Circle(x + room.node.x, y + room.node.y, 10));
-      t.setLocation(x + room.node.x, y + room.node.y);
-      t.setSize(100, 150);
+      t.setTriggerLocation(new FixedCircle(x + room.node.x, y + room.node.y, 10));
+      t.setLocation(x + room.node.x, y + room.node.y - t.height - 8);
     }
   }
   
@@ -61,15 +67,12 @@ public class PersonnelDisplay {
     g.setFont(Personnel.smallFont);
     for (ShipNode node: shipInternals.nodes.values()) {
       g.fillOval(x + node.x - 2, y + node.y - 3, 6, 6);
-      // g.drawString("" + node.id, x + node.x, y + node.y);
     }
     
     for (ShipRoom room: shipInternals.rooms) {
-      // g.drawString(room.name, x + room.x, y + room.y);
     }
     
     for (Tooltip t: tooltips) {
-      g.draw(t.triggerLocation);
       t.draw(g);
     }
     
@@ -90,5 +93,20 @@ public class PersonnelDisplay {
           break;
       }
     }
+  }
+
+  Circle roomCircle = new FixedCircle(0, 0, 0);
+  public boolean click(int x, int y) {
+    for (ShipNode node: shipInternals.nodes.values()) {
+      roomCircle.setLocation(this.x + node.x - 10, this.y + node.y - 10);
+      roomCircle.setRadius(10);
+      
+      if (roomCircle.contains(x, y)) {
+        teamControls.setSelectedNode(node);
+        return true;
+      }
+    }
+    
+    return false;
   }
 }

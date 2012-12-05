@@ -57,7 +57,7 @@ public class RoomControls {
               button.selected = false;
           }
           
-          teamControls.setSelectedRoom(room);
+          teamControls.setSelectedNode(room.node);
           System.out.println(room.name);
         }
       });

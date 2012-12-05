@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import org.newdawn.slick.*;
+import starparty.component.FixedCircle;
 import starparty.library.Schematic;
 import starparty.library.ShipInternals;
 import starparty.library.ShipNode;
@@ -61,6 +62,9 @@ public class Personnel extends BasicGame {
   
   @Override
   public void init(GameContainer gc) throws SlickException {
+    System.out.println(new FixedCircle(10, 10, 2).contains(8, 8));
+    System.out.println(new FixedCircle(10, 10, 2).contains(10, 10));
+    
     basicColor = new Color(100, 151, 244);
     backgroundColor = Color.black;
 
@@ -94,15 +98,16 @@ public class Personnel extends BasicGame {
     teams.add(new Team("Transporter", shipInternals.nodes.get(1)));
     teams.add(new Team("Pilot", shipInternals.nodes.get(1)));
     teams.add(new Team("Attack", shipInternals.nodes.get(1)));
-
-    personnelDisplay = new PersonnelDisplay(shipInternals, teams);
-    personnelDisplay.setLocation(120, 261);
-    personnelDisplay.setSize(1000, 700);
     
     teamControls = new TeamControls();
     teamControls.setLocation(771, 53);
     teamControls.setSize(242, 117);
     teamControls.setShipInternals(shipInternals);
+
+    personnelDisplay = new PersonnelDisplay(shipInternals, teams);
+    personnelDisplay.setLocation(120, 261);
+    personnelDisplay.setSize(1000, 700);
+    personnelDisplay.setTeamControls(teamControls);
     
     teamManager = new TeamManager(teams);
     teamManager.setLocation(102, 16);
@@ -137,6 +142,9 @@ public class Personnel extends BasicGame {
     teamControls.draw(g);
     personnelDisplay.draw(g);
     roomControls.draw(g);
+    
+    // g.setColor(Color.white);
+    // g.drawString("(" + mouseX + ", " + mouseY + ")", 10, 30);
   }
 
   @Override
@@ -144,5 +152,6 @@ public class Personnel extends BasicGame {
     teamManager.click(x, y);
     teamControls.click(x, y);
     roomControls.click(x, y);
+    personnelDisplay.click(x, y);
   }
 }
