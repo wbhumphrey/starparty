@@ -47,6 +47,7 @@ public class Viewscreen {
       view.setRotation(0);
       Graphics buffer = view.getGraphics();
       buffer.clear();
+      buffer.resetTransform();
       buffer.setColor(Color.green);
       buffer.drawLine(0, 0, width, 0);
       buffer.drawLine(0, 0, 0, height);
@@ -55,13 +56,13 @@ public class Viewscreen {
       buffer.drawLine(width / 2, 0, width / 2, height);
       buffer.drawLine(0, height / 2, width, height / 2);
       buffer.drawString("(0, 0)", x + width / 2, y + height / 2);
+      buffer.rotate(100, 20, 45);
+      buffer.scale(0.2f, 0.2f);
 //      buffer.rotate(10, 20, (float)Math.toRadians(45));
       buffer.flush();
       //view.rotate((float) 45);
       g.drawImage(view, x, y);
 //      g.scale(200, 200);
-      g.rotate(100, 0, 45);
-      g.scale(0.2f, 0.2f);
 //      g.setWorldClip(x, y, width, height);
     } catch (SlickException ex) {
       Logger.getLogger(Viewscreen.class.getName()).log(Level.SEVERE, null, ex);
