@@ -9,7 +9,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Path;
 
 import starparty.library.InterstellarObject;
 import starparty.library.Player;
@@ -23,7 +22,7 @@ public class Viewscreen {
   List<InterstellarObject> interstellarObjects;
   Player player;
   private Color alphaWhiteColor = new Color(255, 255, 255, 50);
-  // Image buffers
+  Graphics buffer;
   Image view;
 
   public Viewscreen(Player player, int x, int y, int height, int width, boolean xy, List<InterstellarObject> interstellarObjects) {
@@ -37,16 +36,16 @@ public class Viewscreen {
     this.xy = xy;
     try {
       view = new Image(width, height);
+      buffer = view.getGraphics();
     } catch (SlickException ex) {
       Logger.getLogger(Viewscreen.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
 
-  private void drawGrid(Graphics g) {
+  private void drawGrid(Graphics buffer) {
     try {
-      view.setRotation(0);
-      Graphics buffer = view.getGraphics();
-      buffer.clear();
+      // view.setRotation(0);
+      
       buffer.setColor(Color.green);
       buffer.drawLine(0, 0, width, 0);
       buffer.drawLine(0, 0, 0, height);
@@ -56,14 +55,11 @@ public class Viewscreen {
       buffer.drawLine(0, height / 2, width, height / 2);
       buffer.drawString("(0, 0)", x + width / 2, y + height / 2);
 //      buffer.rotate(10, 20, (float)Math.toRadians(45));
-      buffer.rotate(100, 0, 45);
-      buffer.scale(0.2f, 0.2f);
-      buffer.flush();
-      //view.rotate((float) 45);
-      g.drawImage(view, x, y);
+      // 
+
 //      g.scale(200, 200);
 //      g.setWorldClip(x, y, width, height);
-    } catch (SlickException ex) {
+    } catch (Exception ex) {
       Logger.getLogger(Viewscreen.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
@@ -108,9 +104,21 @@ public class Viewscreen {
 
   public void draw(Graphics g) {
     g.setAntiAlias(true);
-    drawInterstellarObjects(g);
-    drawGrid(g);
+    
+    buffer.clear();
 
+    buffer.pushTransform();
+    buffer.scale(0.8f, 0.3f);
+    buffer.rotate(200, 200, 45);
+
+    drawInterstellarObjects(buffer);
+    drawGrid(buffer);
+    
+    buffer.popTransform();
+    buffer.flush();
+    //view.rotate((float) 45);
+    g.drawImage(view, x, y);
+ 
 //    float centerX = x + width / 2, centerY = y + height / 2;
 //    Path path = new Path(centerX, centerY);
 //    path.curveTo(centerX + 190, centerY + 140, centerX, centerY, centerX + 50, centerY + 100);
@@ -119,5 +127,6 @@ public class Viewscreen {
 //    g.fill(path);
 //    g.setColor(Color.white);
 //    g.draw(path);
+    
   }
 }
