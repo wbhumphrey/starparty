@@ -1,23 +1,33 @@
 package starparty.pilot;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.vecmath.Point3d;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Path;
 
 import starparty.library.InterstellarObject;
 import starparty.library.Player;
+import starparty.utilities.Distance;
 
 public class Viewscreen {
 
   int x, y, height, width;
+  double gridAngle;
   boolean xy;
   List<InterstellarObject> interstellarObjects;
   Player player;
   private Color alphaWhiteColor = new Color(255, 255, 255, 50);
+  // Image buffers
+  Image view;
 
   public Viewscreen(Player player, int x, int y, int height, int width, boolean xy, List<InterstellarObject> interstellarObjects) {
+    this.gridAngle = Math.toRadians(80);
     this.player = player;
     this.x = x;
     this.y = y;
@@ -25,9 +35,34 @@ public class Viewscreen {
     this.width = width;
     this.interstellarObjects = interstellarObjects;
     this.xy = xy;
+    try {
+      view = new Image(width, height);
+    } catch (SlickException ex) {
+      Logger.getLogger(Viewscreen.class.getName()).log(Level.SEVERE, null, ex);
+    }
   }
 
   private void drawGrid(Graphics g) {
+    try {
+      Graphics buffer = view.getGraphics();
+      buffer.clear();
+      buffer.setColor(Color.green);
+      buffer.drawLine(0, 0, width, 0);
+      buffer.drawLine(0, 0, 0, height);
+      buffer.drawLine(width, 0, width, height);
+      buffer.drawLine(0, 0 + height, width, height);
+      buffer.drawLine(width / 2, 0, width / 2, height);
+      buffer.drawLine(0, height / 2, width, height / 2);
+      buffer.drawString("(0, 0)", x + width / 2, y + height / 2);
+      buffer.rotate(0, 0, 45);
+      buffer.flush();
+      g.drawImage(view, x, y);
+    } catch (SlickException ex) {
+      Logger.getLogger(Viewscreen.class.getName()).log(Level.SEVERE, null, ex);
+    }
+  }
+  
+  private void drawGrid2(Graphics g) {
     g.setColor(Color.green);
     g.drawLine(x, y, x + width, y);
     g.drawLine(x, y, x, y + height);
@@ -41,21 +76,23 @@ public class Viewscreen {
   private void drawInterstellarObjects(Graphics g) {
     int range = 200;
     for (InterstellarObject interstellarObject : interstellarObjects) {
-      if (player.ship.x + interstellarObject.x < -range || player.ship.x + interstellarObject.x > range || player.ship.y + interstellarObject.y < -range || player.ship.y + interstellarObject.y > range || player.ship.z + interstellarObject.z < -range || player.ship.z + interstellarObject.z > range) {
+      if(Distance.isDistanceGreaterThan(player.ship, interstellarObject, range)) {
         continue;
       }
-      if (interstellarObject.z > player.ship.z + 50) {
+      Point3d location = player.ship.getLocation();
+      Point3d iLocation = interstellarObject.getLocation();
+      if (iLocation.z > location.z + 50) {
         g.setColor(Color.pink);
-      } else if (interstellarObject.z < player.ship.z - 50) {
+      } else if (iLocation.z < location.z - 50) {
         g.setColor(Color.magenta);
       } else {
         g.setColor(Color.red);
       }
       float centerX = x + width / 2, centerY = y + height / 2;
       if (xy) {
-        g.fillOval(player.ship.x + centerX + (int) interstellarObject.x, player.ship.y + centerY + (int) interstellarObject.y, 6, 6);
+        g.fillOval((float) (location.x + centerX + iLocation.x), (float) (location.y + centerY + iLocation.y), 6, 6);
       } else {
-        g.fillOval(player.ship.y + centerX + (int) interstellarObject.y, player.ship.z + centerY + (int) interstellarObject.z, 6, 6);
+        g.fillOval((float) (location.y + centerX + iLocation.y), (float) (location.z + centerY + iLocation.z), 6, 6);
       }
       //System.out.println("(" + interstellarObject.x + ", " + interstellarObject.y + ")");
       //g.drawRect(x + interstellarObject.x, interstellarObject.y, 2, 2);
