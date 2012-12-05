@@ -33,7 +33,9 @@ public class TeamControls {
     move = new Button("Move") {
       @Override
       public void click() {
-        if (selectedTeam.location.id != selectedRoom.node.id)
+        boolean validRoom = selectedRoom != null;
+        
+        if (validRoom && selectedTeam.location.id != selectedRoom.node.id)
           selectedTeam.move(shipInternals.getPath(selectedTeam.location.id, selectedRoom.node.id));
       }      
     };

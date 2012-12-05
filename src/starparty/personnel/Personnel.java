@@ -21,6 +21,9 @@ import starparty.utilities.ImageLoader;
  * @author Tyler
  */
 public class Personnel extends BasicGame {
+  public static int mouseX;
+  public static int mouseY;
+  
   public static Color basicColor;
   public static Color backgroundColor;
   public static UnicodeFont titleFont;
@@ -86,13 +89,12 @@ public class Personnel extends BasicGame {
     teams.add(new Team("Engineering", shipInternals.nodes.get(1)));
     teams.add(new Team("Command", shipInternals.nodes.get(1)));
     teams.add(new Team("Communication", shipInternals.nodes.get(1)));
-    /*
-    teams.add(new Team("Sensor", shipInternals.shipNodes.get(1)));
-    teams.add(new Team("Morale", shipInternals.shipNodes.get(1)));
-    teams.add(new Team("Transporter", shipInternals.shipNodes.get(1)));
-    teams.add(new Team("Pilot", shipInternals.shipNodes.get(1)));
-    teams.add(new Team("Attack", shipInternals.shipNodes.get(1)));
-    */
+    teams.add(new Team("Sensor", shipInternals.nodes.get(1)));
+    teams.add(new Team("Morale", shipInternals.nodes.get(1)));
+    teams.add(new Team("Transporter", shipInternals.nodes.get(1)));
+    teams.add(new Team("Pilot", shipInternals.nodes.get(1)));
+    teams.add(new Team("Attack", shipInternals.nodes.get(1)));
+
     personnelDisplay = new PersonnelDisplay(shipInternals, teams);
     personnelDisplay.setLocation(120, 261);
     personnelDisplay.setSize(1000, 700);
@@ -112,6 +114,12 @@ public class Personnel extends BasicGame {
     roomControls.setSize(183, 3);
     roomControls.setRooms(shipInternals.rooms.subList(0, 12));
     roomControls.setTeamControls(teamControls);
+  }
+
+  @Override
+  public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+    mouseX = newx;
+    mouseY = newy;
   }
 
   @Override
