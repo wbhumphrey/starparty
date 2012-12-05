@@ -33,19 +33,24 @@ public class Tactical extends BasicGame {
   }
 
   public static void main(String... args) {
-    try {
-      System.out.println(new java.io.File(".").getCanonicalPath());
-
-      AppGameContainer app = new AppGameContainer(new Tactical());
-      app.setDisplayMode(1024, 700, false);
-      app.setSmoothDeltas(true);
-      app.setTargetFrameRate(60);
-      app.setShowFPS(true);
-      app.start();
-    } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    InterstellarObjectFactory.generateFactory(
+            "resources/interstellar_object/interstellar_object_schematic.json");
+    
+    InterstellarObjectFactory factory = InterstellarObjectFactory.getFactory();    
+    
+//    try {
+//      System.out.println(new java.io.File(".").getCanonicalPath());
+//
+//      AppGameContainer app = new AppGameContainer(new Tactical());
+//      app.setDisplayMode(1024, 700, false);
+//      app.setSmoothDeltas(true);
+//      app.setTargetFrameRate(60);
+//      app.setShowFPS(true);
+//      app.start();
+//    } catch (Exception e) {
+//      // TODO Auto-generated catch block
+//      e.printStackTrace();
+//    }
   }
 
   @Override

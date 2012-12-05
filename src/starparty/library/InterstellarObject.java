@@ -43,4 +43,5 @@ public class InterstellarObject {
     location.y = y;
     location.z = z;
   }
+  
 }

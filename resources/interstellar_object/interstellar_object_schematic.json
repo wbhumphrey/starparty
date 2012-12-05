@@ -1,30 +1,6 @@
 {
   ships: [
-    {"x": 80, "y": 136, "rooms": ["cargo bay 1"]},
-    {"x": 80, "y": 158, "rooms": []},
-    {"x": 147, "y": 158, "rooms": []},
-    {"id": 4, "x": 147, "y": 180, "rooms": ["transporter 2"]},
-    {"id": 5, "x": 195, "y": 158, "rooms": []},
-    {"id": 6, "x": 195, "y": 125, "rooms": ["shuttle bay 2"]},
-    {"id": 7, "x": 220, "y": 158, "rooms": []},
-    {"id": 8, "x": 220, "y": 191, "rooms": ["cargo bay 2"]},
-    {"id": 9, "x": 360, "y": 158, "rooms": []},
-    {"id": 10, "x": 360, "y": 136, "rooms": ["shuttle bay 1"]},
-    {"id": 11, "x": 360, "y": 224, "rooms": []},
-    {"id": 12, "x": 323, "y": 224, "rooms": ["phasers 2"]},
-    {"id": 13, "x": 360, "y": 246, "rooms": ["phasers 1"]},
-    {"id": 14, "x": 388, "y": 224, "rooms": ["main engineering"]},
-    {"id": 15, "x": 444, "y": 158, "rooms": []},
-    {"id": 16, "x": 444, "y": 180, "rooms": ["medical"]},
-    {"id": 17, "x": 526, "y": 158, "rooms": []},
-    {"id": 18, "x": 526, "y": 92, "rooms": ["impulse"]},
-    {"id": 19, "x": 572, "y": 158, "rooms": ["computer 1"]},
-    {"id": 20, "x": 572, "y": 92, "rooms": ["computer 2"]},
-    {"id": 21, "x": 572, "y": 26, "rooms": ["bridge"]},
-    {"id": 22, "x": 572, "y": 224, "rooms": ["transporter 1"]},
-    {"id": 23, "x": 644, "y": 158, "rooms": ["quarters 1"]},
-    {"id": 24, "x": 644, "y": 92, "rooms": ["quarters 2"]},
-    {"id": 25, "x": 644, "y": 70, "rooms": ["security"]},
-    {"id": 26, "x": 644, "y": 180, "rooms": ["torpedoes"]}
+    {"name": "Domenica", "type": "frigate", "maxShieldStrength": 100, "maxHullStrength": 200, "location": {"x": 10, "y": 10, "z":10}},
+    {"name": "Brigid", "type": "cruiser", "maxShieldStrength": 120, "maxHullStrength": 150, "location": {"x": 5, "y": 5, "z":5}}
   ]
 }
