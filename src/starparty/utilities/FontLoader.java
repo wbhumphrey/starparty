@@ -22,8 +22,8 @@ public class FontLoader {
     String id = name + "-" + size + "-" + bold;
     UnicodeFont font = null;
     
-    if (cache.containsKey(id)) {
-      return cache.get(id);
+    if ((font = cache.get(id)) != null) {
+      return font;
     }
     
     try {
