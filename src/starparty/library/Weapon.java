@@ -5,7 +5,6 @@
 package starparty.library;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import org.newdawn.slick.Image;
 
@@ -45,7 +44,7 @@ public class Weapon {
   public boolean canFire() {
     return getCurrentCooldown() == cooldown;
   }
-  
+
   public boolean inRange(double distance) {
     for (WeaponRange range : ranges) {
       if (range.min <= distance && range.max >= distance) {

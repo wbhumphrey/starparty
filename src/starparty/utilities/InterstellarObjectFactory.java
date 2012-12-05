@@ -13,27 +13,32 @@ import starparty.library.Ship;
  * @author Tyler
  */
 public class InterstellarObjectFactory {
+  
+//  public static InterstellarObject generate(String name){
+//    
+//  }
+  
   public static InterstellarObject generatePlanet(String organization) {
     InterstellarObject o = new InterstellarObject(NameGenerator.generate("planet", "federation"), 0, 0, 0);
     o.type = "Planet";
-    try {o.portrait = new Image("resources/interstellar_object/planet/earth.jpg");} catch (Exception e) {}
-    try {o.icon = new Image("resources/interstellar_object/planet/earth_icon.png");} catch (Exception e) {}
-    
+    o.portrait = ImageLoader.load("resources/interstellar_object/planet/earth.jpg");
+    o.icon = ImageLoader.load("resources/interstellar_object/planet/earth_icon.png");
+
     return o;
   }
-  
+
   public static InterstellarObject generateShip(String organization) {
     Ship s = new Ship(NameGenerator.generate("ship", "federation"), 0, 0, 0);
     s.type = "Scout Ship";
-    try {s.portrait = new Image("resources/interstellar_object/ship/scout.png");} catch (Exception e) {}
-    try {s.icon = new Image("resources/interstellar_object/ship/scout_icon.png");} catch (Exception e) {}
+    s.portrait =  ImageLoader.load("resources/interstellar_object/ship/scout.png");
+    s.icon = ImageLoader.load("resources/interstellar_object/ship/scout_icon.png");
     
-    s.maxHullStrength = 500;
-    s.maxShieldStrength = 200;
-    
-    s.hullStrength = s.maxHullStrength;
-    s.shieldStrength = s.maxShieldStrength;
-    
+    s.setMaxHullStrength(500);
+    s.setMaxShieldStrength(200);
+
+    s.hullStrength = s.getMaxHullStrength();
+    s.shieldStrength = s.getMaxShieldStrength();
+
     return s;
   }
 }

@@ -47,8 +47,8 @@ public class InterstellarObjectStatus {
 
       if (o instanceof Ship) {
         Ship s = (Ship) o;
-        g.drawString((int)Math.ceil(s.shieldStrength) + " / " + s.maxShieldStrength + " Shield Strength", x + 150, y + 60);
-        g.drawString((int)Math.ceil(s.hullStrength) + " / " + s.maxHullStrength + " Hull Strength", x + 150, y + 75);
+        g.drawString((int)Math.ceil(s.shieldStrength) + " / " + s.getMaxShieldStrength() + " Shield Strength", x + 150, y + 60);
+        g.drawString((int)Math.ceil(s.hullStrength) + " / " + s.getMaxHullStrength() + " Hull Strength", x + 150, y + 75);
       }
     }
   }
