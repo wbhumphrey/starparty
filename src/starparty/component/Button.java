@@ -8,7 +8,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.geom.Rectangle;
-import starparty.tactical.Tactical;
 import starparty.utilities.FontLoader;
 
 /**
@@ -21,13 +20,32 @@ public abstract class Button {
   int y;
   int width;
   int height;
-  public Color color = new Color(100, 151, 244);
-  public UnicodeFont font = FontLoader.load("TCM_____.TTF", 35, true);
+  
+  public static class ButtonStyle {
+    public Color backgroundColor;
+    public Color foregroundColor;
+    public UnicodeFont font;
+    
+    public ButtonStyle(Color fg, Color bg, UnicodeFont font) {
+      this.foregroundColor = fg;
+      this.backgroundColor = bg;
+      this.font = font;
+    }
+  }
+  
+  private static final ButtonStyle LARGE = new ButtonStyle(Color.black, new Color(100, 151, 244), FontLoader.load("TCM_____.TTF", 35, true));
+  private static final ButtonStyle NORMAL = new ButtonStyle(Color.black, new Color(100, 151, 244), FontLoader.load("TCM_____.TTF", 20));
+  private static final ButtonStyle SMALL = new ButtonStyle(Color.black, new Color(100, 151, 244), FontLoader.load("TCM_____.TTF", 10));
   
   private final Rectangle r = new Rectangle(0, 0, 0, 0);
-  
+  public ButtonStyle style;
   public Button(String label) {
+    this(label, Button.NORMAL);
+  }
+  
+  public Button(String label, ButtonStyle style) {
     this.label = label;
+    this.style = style;
   }
   
   public void setColor() {
@@ -63,11 +81,11 @@ public abstract class Button {
   }
   
   public void draw(Graphics g) {
-    g.setColor(color);
+    g.setColor(style.backgroundColor);
     g.fillRect(x, y, width, height);
 
-    g.setFont(font);
-    g.setColor(Color.black);
+    g.setColor(style.foregroundColor);
+    g.setFont(style.font);
     g.drawString(label, x + 10, y + 10);
   }
   

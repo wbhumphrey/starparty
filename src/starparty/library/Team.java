@@ -5,7 +5,6 @@
 package starparty.library;
 
 import java.util.List;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import starparty.utilities.ImageLoader;
 
@@ -20,7 +19,7 @@ public class Team {
   ShipNode destination;
   public Image icon;
   
-  public static enum MoveStatus {STOPPED, STOPPING, MOVING};
+  public static enum MoveStatus {STOPPED, MOVING};
   public MoveStatus moveStatus = MoveStatus.STOPPED;
   public int elapsed;
   List<ShipNode> path;
@@ -48,11 +47,17 @@ public class Team {
     }
   }
   
+  public void stop() {
+    if (moveStatus == MoveStatus.MOVING) {
+      path = path.subList(0, currentPathStart + 2);
+      System.out.println(currentPathStart + ", " + path.size());
+    }
+  }
+  
   public ShipPath currentSegment;
   int currentPathStart;
   public void update(int delta) {
     switch (moveStatus) {
-      case STOPPING:
       case MOVING:
         elapsed += delta;
         int costInMillis = currentSegment.cost * 1000;

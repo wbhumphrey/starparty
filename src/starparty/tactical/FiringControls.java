@@ -72,7 +72,7 @@ public class FiringControls implements TargetListener {
         }
       }
     };
-    fireButton.font = Tactical.titleFont;
+    fireButton.style.font = Tactical.titleFont;
     fireButton.setLocation(x + 220, y + 130);
     fireButton.setSize(width - 220, 85);
   }
@@ -115,16 +115,16 @@ public class FiringControls implements TargetListener {
 
   public void updateFireButton() {
     if (target == null) {
-      fireButton.color = new Color(255, 0, 0);
+      fireButton.style.backgroundColor = new Color(255, 0, 0);
       fireButton.label = "Select Target";
     } else if (weapon == null) {
-      fireButton.color = new Color(255, 0, 0);
+      fireButton.style.backgroundColor = new Color(255, 0, 0);
       fireButton.label = "No Weapon Selected";
     } else if (weapon.inRange(Distance.calculate(source, target))) {
-      fireButton.color = Tactical.basicColor;
+      fireButton.style.backgroundColor = Tactical.basicColor;
       fireButton.label = "Fire";
     } else {
-      fireButton.color = new Color(255, 0, 0);
+      fireButton.style.backgroundColor = new Color(255, 0, 0);
       fireButton.label = "Out of Range";
     }
   }

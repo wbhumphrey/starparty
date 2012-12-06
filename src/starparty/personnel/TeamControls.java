@@ -49,6 +49,7 @@ public class TeamControls {
     stop = new Button("Stop") {
       @Override
       public void click() {
+        selectedTeam.stop();
       }      
     };
   }
@@ -77,13 +78,13 @@ public class TeamControls {
   
   public void init() {
     move.setLocation(x, y);
-    move.setSize(200, 45);
+    move.setSize(200, 25);
     
-    move2.setLocation(x, y + 50);
-    move2.setSize(200, 45);
+    move2.setLocation(x, y + 40);
+    move2.setSize(200, 25);
     
-    stop.setLocation(x, y + 100);
-    stop.setSize(200, 45);
+    stop.setLocation(x, y + 80);
+    stop.setSize(200, 25);
   }
   
   public void draw(Graphics g) {

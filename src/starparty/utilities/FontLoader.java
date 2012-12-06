@@ -17,18 +17,21 @@ import org.newdawn.slick.font.effects.ColorEffect;
  */
 public class FontLoader {
   private static Map<String, UnicodeFont> cache = new HashMap<String, UnicodeFont>();
+  private static Map<String, Font> baseCache = new HashMap<String, Font>();
   
   public static UnicodeFont load(String name, int size, boolean bold) {
     String id = name + "-" + size + "-" + bold;
     UnicodeFont font = null;
+    Font baseFont;
     
-    if ((font = cache.get(id)) != null) {
-      return font;
-    }
-    
-    try {
-      Font baseFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/font/" + name));
-      baseFont.deriveFont(java.awt.Font.PLAIN, 12);
+    try {    
+      if ((font = cache.get(id)) != null) {
+        return font;
+      }
+      
+      if ((baseFont = baseCache.get(name)) == null) {
+        baseCache.put(name, baseFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/font/" + name))); 
+      }
       
       int style = (bold ? java.awt.Font.BOLD : java.awt.Font.PLAIN);
       font = new UnicodeFont(baseFont.deriveFont(style, size));

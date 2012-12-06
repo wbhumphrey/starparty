@@ -83,7 +83,6 @@ public class PersonnelDisplay {
           break;
 
         case MOVING:
-        case STOPPING:
           ShipPath path = team.currentSegment;
           double percentComplete = (0.0 + team.elapsed) / (1000 * path.cost);
           
