@@ -7,6 +7,7 @@ package starparty.library;
 import java.util.ArrayList;
 import java.util.List;
 import org.newdawn.slick.Image;
+import starparty.utilities.ImageLoader;
 
 /**
  *
@@ -20,7 +21,7 @@ public class Weapon {
   public int maxDamage;
   public int requiredPower;
   public int cooldown = 10000;
-  public Image image;
+  private ImageLoader image;
   // Status variables
   public double damage;
   public int power;
@@ -31,10 +32,15 @@ public class Weapon {
 
   public Weapon(String name) {
     this.name = name;
-    try {
-      this.image = new Image("resources/tactical/weapons/phaser.png");
-    } catch (Exception e) {
-    }
+    initialize();
+  }
+  
+  public void initialize(){
+    cooldown = (cooldown > 0 ? cooldown : 10000);
+  }
+  
+  public Image getImage(){
+    return image.getImage();
   }
 
   public void setCooldown(int cooldown) {

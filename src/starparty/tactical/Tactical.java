@@ -1,17 +1,16 @@
 package starparty.tactical;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 import org.newdawn.slick.*;
 import starparty.library.*;
 import starparty.utilities.FontLoader;
-import starparty.utilities.InterstellarObjectFactory;
-import starparty.utilities.NameGenerator;
+import starparty.utilities.InterstellarObjectRepository;
 
 public class Tactical extends BasicGame {
 
-  List<InterstellarObject> interstellarObjects = new ArrayList<InterstellarObject>();
+  Collection<InterstellarObject> interstellarObjects = new ArrayList<InterstellarObject>();
   List<Weapon> weapons = new ArrayList<Weapon>();
   Player player;
   Image background;
@@ -33,24 +32,17 @@ public class Tactical extends BasicGame {
   }
 
   public static void main(String... args) {
-    InterstellarObjectFactory.generateFactory(
-            "resources/interstellar_object/interstellar_object_schematic.json");
-    
-    InterstellarObjectFactory factory = InterstellarObjectFactory.getFactory();    
-    
-//    try {
-//      System.out.println(new java.io.File(".").getCanonicalPath());
-//
-//      AppGameContainer app = new AppGameContainer(new Tactical());
-//      app.setDisplayMode(1024, 700, false);
-//      app.setSmoothDeltas(true);
-//      app.setTargetFrameRate(60);
-//      app.setShowFPS(true);
-//      app.start();
-//    } catch (Exception e) {
-//      // TODO Auto-generated catch block
-//      e.printStackTrace();
-//    }
+    try {
+      AppGameContainer app = new AppGameContainer(new Tactical());
+      app.setDisplayMode(1024, 700, false);
+      app.setSmoothDeltas(true);
+      app.setTargetFrameRate(60);
+      app.setShowFPS(true);
+      app.start();
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -72,42 +64,37 @@ public class Tactical extends BasicGame {
     basicFont = FontLoader.load("TCM_____.TTF", 30);
     titleFont = FontLoader.load("TCM_____.TTF", 35, true);
     smallFont = FontLoader.load("TCM_____.TTF", 15);
+    
+    InterstellarObjectRepository repo = InterstellarObjectRepository.initialize(
+            "resources/interstellar_object/interstellar_object_schematic.json");
 
     player = new Player(0, 0, 0);
-
-    Random r = new Random();
-    for (int i = 1; i <= 5; i++) {
-      InterstellarObject o = InterstellarObjectFactory.generatePlanet("federation");
-      o.setLocation(r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400);
-      interstellarObjects.add(o);
-    }
-
-    for (int i = 1; i <= 15; i++) {
-      InterstellarObject o = InterstellarObjectFactory.generateShip("federation");
-      o.setLocation(r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400);
-      interstellarObjects.add(o);
-    }
-
-    Weapon w;
-    weapons.add(w = new Weapon("Phaser"));
-    w.shieldDamage = 100;
-    w.hullDamage = 0;
-    w.addRange(new WeaponRange(0, 100, 1));
-    w.addRange(new WeaponRange(101, 200, .5));
-    w.addRange(new WeaponRange(201, 500, .25));
-
-    weapons.add(w = new Weapon("Photon Torpedos"));
-    w.shieldDamage = 25;
-    w.hullDamage = 100;
-    w.shieldDamageReduction = .5;
-    w.addRange(new WeaponRange(300, 500, 1));
-
-    weapons.add(w = new Weapon("Rail Gun"));
-    w.shieldDamage = 10;
-    w.hullDamage = 50;
-    w.shieldDamageReduction = 1;
-    w.addRange(new WeaponRange(0, 500, 1));
-    w.addRange(new WeaponRange(501, 1000, .5));
+    player.ship = repo.getShip("Domenica");
+    player.ship.setLocation(0, 0, 0);
+            
+    interstellarObjects = repo.values();
+    interstellarObjects.remove(player.ship);
+    
+//    Weapon w;
+//    weapons.add(w = new Weapon("Phaser"));
+//    w.shieldDamage = 100;
+//    w.hullDamage = 0;
+//    w.addRange(new WeaponRange(0, 100, 1));
+//    w.addRange(new WeaponRange(101, 200, .5));
+//    w.addRange(new WeaponRange(201, 500, .25));
+//
+//    weapons.add(w = new Weapon("Photon Torpedos"));
+//    w.shieldDamage = 25;
+//    w.hullDamage = 100;
+//    w.shieldDamageReduction = .5;
+//    w.addRange(new WeaponRange(300, 500, 1));
+//
+//    weapons.add(w = new Weapon("Rail Gun"));
+//    w.shieldDamage = 10;
+//    w.hullDamage = 50;
+//    w.shieldDamageReduction = 1;
+//    w.addRange(new WeaponRange(0, 500, 1));
+//    w.addRange(new WeaponRange(501, 1000, .5));
 
     firingControls = new FiringControls(player.ship, target);
     firingControls.setLocation(107, 473);
@@ -118,7 +105,7 @@ public class Tactical extends BasicGame {
     //weapons.add(new Weapon("Planet Buster"));
     //weapons.add(new Weapon("Machine Gun"));
 
-    weaponManager = new WeaponManager(weapons);
+    weaponManager = new WeaponManager(player.ship.weapons);
     weaponManager.setLocation(120, 100);
     weaponManager.setSize(300, 600);
     weaponManager.setFiringControls(firingControls);

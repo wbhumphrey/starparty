@@ -1,16 +1,29 @@
 package starparty.library;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Ship extends InterstellarObject {
   private int maxShieldStrength;
   private int maxHullStrength;
-  public double shieldStrength;
-  public double hullStrength;
+  public double shieldStrength = -1;
+  public double hullStrength = -1;
+  public List<Weapon> weapons = new ArrayList<Weapon>();
 
   public Ship(String name, float x, float y, float z) {
     super(name, x, y, z);
   }
   
   public Ship(){
+  }
+  
+  public void initialize() {
+    hullStrength = ( hullStrength >= 0 ? hullStrength : maxHullStrength);
+    shieldStrength = ( shieldStrength >= 0 ? shieldStrength : maxShieldStrength);
+      
+    for(Weapon weapon : weapons){
+      weapon.initialize();
+    }
   }
   
   @Override

@@ -84,7 +84,7 @@ public class FiringControls implements TargetListener {
 
   public void draw(Graphics g) {
     if (weapon != null) {
-      g.drawImage(weapon.image, x, y);
+      g.drawImage(weapon.getImage(), x, y);
 
       g.setFont(Tactical.basicFont);
       g.setColor(Tactical.basicColor);

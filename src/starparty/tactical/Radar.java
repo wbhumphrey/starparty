@@ -5,6 +5,7 @@
 package starparty.tactical;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -25,7 +26,7 @@ public class Radar {
   int height;
   
   Player player;
-  List<InterstellarObject> objects = new ArrayList<InterstellarObject>();
+  Collection<InterstellarObject> objects = new ArrayList<InterstellarObject>();
   WeaponManager weaponManager;
   InterstellarObjectStatus objectStatus;
   Target target;
@@ -39,7 +40,7 @@ public class Radar {
   private int gridSpace;
   private int gridLines = 8;
 
-  public Radar(Player player, List<InterstellarObject> objects, Target target) {
+  public Radar(Player player, Collection<InterstellarObject> objects, Target target) {
     this.player = player;
     this.objects = objects;
     this.target = target;
