@@ -25,17 +25,19 @@ public abstract class Button {
     public Color backgroundColor;
     public Color foregroundColor;
     public UnicodeFont font;
+    int padding;
     
-    public ButtonStyle(Color fg, Color bg, UnicodeFont font) {
+    public ButtonStyle(Color fg, Color bg, UnicodeFont font, int padding) {
       this.foregroundColor = fg;
       this.backgroundColor = bg;
       this.font = font;
+      this.padding = padding;
     }
   }
   
-  private static final ButtonStyle LARGE = new ButtonStyle(Color.black, new Color(100, 151, 244), FontLoader.load("TCM_____.TTF", 35, true));
-  private static final ButtonStyle NORMAL = new ButtonStyle(Color.black, new Color(100, 151, 244), FontLoader.load("TCM_____.TTF", 20));
-  private static final ButtonStyle SMALL = new ButtonStyle(Color.black, new Color(100, 151, 244), FontLoader.load("TCM_____.TTF", 10));
+  public static final ButtonStyle LARGE = new ButtonStyle(Color.black, new Color(100, 151, 244), FontLoader.load("TCM_____.TTF", 35, true), 15);
+  public static final ButtonStyle NORMAL = new ButtonStyle(Color.black, new Color(100, 151, 244), FontLoader.load("TCM_____.TTF", 20), 10);
+  public static final ButtonStyle SMALL = new ButtonStyle(Color.black, new Color(100, 151, 244), FontLoader.load("TCM_____.TTF", 10), 8);
   
   private final Rectangle r = new Rectangle(0, 0, 0, 0);
   public ButtonStyle style;
@@ -46,10 +48,8 @@ public abstract class Button {
   public Button(String label, ButtonStyle style) {
     this.label = label;
     this.style = style;
-  }
-  
-  public void setColor() {
-    
+    this.width = style.font.getWidth(label) + style.padding * 2;
+    this.height = style.font.getHeight("A") + style.padding * 2;
   }
   
   public void setLocation(int x, int y) {
@@ -86,7 +86,7 @@ public abstract class Button {
 
     g.setColor(style.foregroundColor);
     g.setFont(style.font);
-    g.drawString(label, x + 10, y + 10);
+    g.drawString(label, x + style.padding, y + style.padding - 2);
   }
   
   public abstract void click();

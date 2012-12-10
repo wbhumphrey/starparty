@@ -44,6 +44,7 @@ public class Personnel extends BasicGame {
   TeamControls teamControls;
   PersonnelDisplay personnelDisplay;
   RoomControls roomControls;
+  RoomDisplay roomDisplay;
   
   public Personnel() {
     super("StarParty");
@@ -74,7 +75,6 @@ public class Personnel extends BasicGame {
     basicFont = FontLoader.load("TCM_____.TTF", 30);
     titleFont = FontLoader.load("TCM_____.TTF", 35, true);
     smallFont = FontLoader.load("TCM_____.TTF", 15);
-
     
     background = ImageLoader.load("personnel/background.jpg");
     
@@ -127,6 +127,11 @@ public class Personnel extends BasicGame {
     roomControls.setSize(183, 3);
     roomControls.setRooms(shipInternals.rooms.subList(0, 12));
     roomControls.setSelectedNode(selectedNode);
+    
+    roomDisplay = new RoomDisplay();
+    roomDisplay.setLocation(732, 570);
+    roomDisplay.setSize(277, 119);
+    roomDisplay.setSelectedNode(selectedNode);
   }
 
   @Override

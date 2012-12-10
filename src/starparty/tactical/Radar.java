@@ -28,6 +28,7 @@ public class Radar implements TargetListener {
   InterstellarObject source;
   Collection<InterstellarObject> objects = new ArrayList<InterstellarObject>();
   Target target;
+  Image weaponRange;
   Image weaponRanges;
   
   // Calculated variables
@@ -88,12 +89,17 @@ public class Radar implements TargetListener {
     try {
       Weapon weapon = target.getWeapon();
 
-      weaponRanges = new Image(width, height);
-
+      if (weaponRanges == null)
+        weaponRanges = new Image(width, height);
+      weaponRanges.getGraphics().clear();
+      
       for(WeaponRange r: weapon.ranges) {
-        Image weaponRange = new Image(width, height);
+        if (weaponRange == null)
+          weaponRange = new Image(width, height);
+        
         Graphics buffer = weaponRange.getGraphics();
-
+        buffer.clear();
+        
         if (r.percentDamage < .3)
           buffer.setColor(LIGHT_DAMAGE_COLOR);
         else if (r.percentDamage < .6)

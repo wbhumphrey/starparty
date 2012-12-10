@@ -4,10 +4,12 @@
  */
 package starparty.personnel;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.newdawn.slick.Graphics;
 import starparty.component.Button;
+import starparty.component.ButtonGroup;
 import starparty.library.ShipInternals;
-import starparty.library.Team;
 
 /**
  *
@@ -19,9 +21,7 @@ public class TeamControls {
   int width;
   int height;
   
-  Button move;
-  Button move2;
-  Button stop;
+  ButtonGroup controls;
   
   TeamSelection team;
   NodeSelection node;
@@ -29,7 +29,9 @@ public class TeamControls {
   ShipInternals shipInternals;
   
   public TeamControls() {
-    move = new Button("Move") {
+    List<Button> buttons = new ArrayList<Button>();
+    
+    buttons.add(new Button("Move", Button.NORMAL) {
       @Override
       public void click() {
         boolean validRoom = node.get() != null;
@@ -37,20 +39,16 @@ public class TeamControls {
         if (validRoom && team.get().location.id != node.get().id)
           team.get().move(shipInternals.getPath(team.get().location.id, node.get().id));
       }      
-    };
+    });
     
-    move2 = new Button("Move Imm.") {
-      @Override
-      public void click() {
-      }      
-    };
-    
-    stop = new Button("Stop") {
+    buttons.add(new Button("Stop", Button.NORMAL) {
       @Override
       public void click() {
         team.get().stop();
       }      
-    };
+    });
+    
+    controls = new ButtonGroup(buttons);
   }
   
   public void setShipInternals(ShipInternals shipInternals) {
@@ -72,29 +70,17 @@ public class TeamControls {
   }
   
   public void init() {
-    move.setLocation(x, y);
-    move.setSize(200, 25);
-    
-    move2.setLocation(x, y + 40);
-    move2.setSize(200, 25);
-    
-    stop.setLocation(x, y + 80);
-    stop.setSize(200, 25);
+    controls.setLocation(x, y);
   }
   
   public void draw(Graphics g) {
     if (team.get() != null) {
-      g.setColor(Personnel.basicColor);
-      move.draw(g);
-      move2.draw(g);
-      stop.draw(g);
+      controls.draw(g);
     }
   }
   
   public void click(int x, int y) {
-    move.click(x, y);
-    move2.click(x, y);
-    stop.click(x, y);
+    controls.click(x, y);
   }
 
   void setSelectedNode(NodeSelection node) {
