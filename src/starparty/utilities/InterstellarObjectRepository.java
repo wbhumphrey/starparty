@@ -9,7 +9,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import starparty.library.InterstellarObject;
 import starparty.library.Ship;
@@ -65,7 +67,7 @@ public class InterstellarObjectRepository {
   /**
    * Instance attributes and methods
    */
-  private HashMap<String, Ship> ships = new HashMap<String, Ship>();
+  private Map<String, Ship> ships = new LinkedHashMap<String, Ship>();
 
   public Ship getShip(String name) {
     return ships.get(name);
@@ -80,10 +82,6 @@ public class InterstellarObjectRepository {
     list.addAll(ships.values());
     
     return list;
-  }
-
-  public void setShips(HashMap<String, Ship> ships) {
-    ships = new HashMap<String, Ship>();
   }
 
   public void initialize() {

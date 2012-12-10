@@ -7,6 +7,7 @@ package starparty.tactical;
 import java.util.HashSet;
 import java.util.Set;
 import starparty.library.InterstellarObject;
+import starparty.library.Weapon;
 
 /**
  *
@@ -15,6 +16,9 @@ import starparty.library.InterstellarObject;
 public class Target {
 
   private InterstellarObject target;
+  private InterstellarObject oldTarget;
+  private Weapon weapon;
+  private Weapon oldWeapon;
   private Set<TargetListener> listeners = new HashSet<TargetListener>();
 
   public InterstellarObject getTarget() {
@@ -22,8 +26,32 @@ public class Target {
   }
 
   public void setTarget(InterstellarObject target) {
+    saveOldState();
     this.target = target;
     notifyTargetChanged();
+  }
+  
+  public InterstellarObject getOldTarget(){
+    return oldTarget;
+  }
+  
+  public Weapon getWeapon() {
+    return weapon;
+  }
+  
+  public void setWeapon(Weapon weapon) {
+    saveOldState();
+    this.weapon = weapon;
+    notifyTargetChanged();
+  }
+  
+  public Weapon getOldWeapon(){
+    return oldWeapon;
+  }
+  
+  private void saveOldState(){
+    oldTarget = target;
+    oldWeapon = weapon;
   }
   
   public void notifyTargetChanged(){

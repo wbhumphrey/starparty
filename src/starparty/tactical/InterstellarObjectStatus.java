@@ -18,8 +18,13 @@ public class InterstellarObjectStatus {
   int y;
   int width;
   int height;
-  InterstellarObject o;
+  
+  Target target;
 
+  public InterstellarObjectStatus(Target target) {
+    this.target = target;
+  }
+  
   public void setLocation(int x, int y) {
     this.x = x;
     this.y = y;
@@ -30,11 +35,8 @@ public class InterstellarObjectStatus {
     this.height = height;
   }
 
-  public void setInterstellarObject(InterstellarObject o) {
-    this.o = o;
-  }
-
   public void draw(Graphics g) {
+    InterstellarObject o = target.getTarget();
     if (o != null) {
       g.drawImage(o.portrait, x, y);
 
