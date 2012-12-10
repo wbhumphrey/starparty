@@ -7,8 +7,6 @@ package starparty.personnel;
 import org.newdawn.slick.Graphics;
 import starparty.component.Button;
 import starparty.library.ShipInternals;
-import starparty.library.ShipNode;
-import starparty.library.ShipRoom;
 import starparty.library.Team;
 
 /**
@@ -21,11 +19,12 @@ public class TeamControls {
   int width;
   int height;
   
-  Team selectedTeam;
-  ShipNode selectedNode;
   Button move;
   Button move2;
   Button stop;
+  
+  TeamSelection team;
+  NodeSelection node;
   
   ShipInternals shipInternals;
   
@@ -33,10 +32,10 @@ public class TeamControls {
     move = new Button("Move") {
       @Override
       public void click() {
-        boolean validRoom = selectedNode != null;
+        boolean validRoom = node.get() != null;
         
-        if (validRoom && selectedTeam.location.id != selectedNode.id)
-          selectedTeam.move(shipInternals.getPath(selectedTeam.location.id, selectedNode.id));
+        if (validRoom && team.get().location.id != node.get().id)
+          team.get().move(shipInternals.getPath(team.get().location.id, node.get().id));
       }      
     };
     
@@ -49,13 +48,9 @@ public class TeamControls {
     stop = new Button("Stop") {
       @Override
       public void click() {
-        selectedTeam.stop();
+        team.get().stop();
       }      
     };
-  }
-  
-  public void setSelectedTeam(Team team) {
-    selectedTeam = team;
   }
   
   public void setShipInternals(ShipInternals shipInternals) {
@@ -88,7 +83,7 @@ public class TeamControls {
   }
   
   public void draw(Graphics g) {
-    if (selectedTeam != null) {
+    if (team.get() != null) {
       g.setColor(Personnel.basicColor);
       move.draw(g);
       move2.draw(g);
@@ -102,7 +97,11 @@ public class TeamControls {
     stop.click(x, y);
   }
 
-  void setSelectedNode(ShipNode node) {
-    this.selectedNode = node;
+  void setSelectedNode(NodeSelection node) {
+    this.node = node;
+  }
+
+  void setSelectedTeam(TeamSelection team) {
+    this.team = team;
   }
 }

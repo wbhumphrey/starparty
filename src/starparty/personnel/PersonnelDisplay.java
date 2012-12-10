@@ -25,16 +25,11 @@ public class PersonnelDisplay {
   List<Team> teams;
   ShipInternals shipInternals;
   List<Tooltip> tooltips;
-  ShipNode selectedNode;
-  TeamControls teamControls;
+  NodeSelection selectedNode;
   
   public PersonnelDisplay(ShipInternals shipInternals, List<Team> teams) {
     this.shipInternals = shipInternals;
     this.teams = teams;
-  }
-  
-  public void setTeamControls(TeamControls teamControls) {
-    this.teamControls = teamControls;
   }
   
   public void setLocation(int x, int y) {
@@ -101,11 +96,15 @@ public class PersonnelDisplay {
       roomCircle.setRadius(10);
       
       if (roomCircle.contains(x, y)) {
-        teamControls.setSelectedNode(node);
+        selectedNode.set(node);
         return true;
       }
     }
     
     return false;
+  }
+
+  void setSelectedNode(NodeSelection selectedNode) {
+    this.selectedNode = selectedNode;
   }
 }

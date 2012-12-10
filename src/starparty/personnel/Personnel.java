@@ -31,6 +31,9 @@ public class Personnel extends BasicGame {
   public static UnicodeFont basicFont;
   public static UnicodeFont smallFont;
   
+  TeamSelection selectedTeam;
+  NodeSelection selectedNode;
+  
   List<Team> teams = new ArrayList<Team>();
   
   Image background;
@@ -99,26 +102,31 @@ public class Personnel extends BasicGame {
     teams.add(new Team("Pilot", shipInternals.nodes.get(1)));
     teams.add(new Team("Attack", shipInternals.nodes.get(1)));
     
+    selectedTeam = new TeamSelection();
+    selectedNode = new NodeSelection();
+    
     teamControls = new TeamControls();
     teamControls.setLocation(771, 53);
     teamControls.setSize(242, 117);
     teamControls.setShipInternals(shipInternals);
+    teamControls.setSelectedNode(selectedNode);
+    teamControls.setSelectedTeam(selectedTeam);
 
     personnelDisplay = new PersonnelDisplay(shipInternals, teams);
     personnelDisplay.setLocation(120, 261);
     personnelDisplay.setSize(1000, 700);
-    personnelDisplay.setTeamControls(teamControls);
+    personnelDisplay.setSelectedNode(selectedNode);
     
     teamManager = new TeamManager(teams);
     teamManager.setLocation(102, 16);
     teamManager.setSize(648, 145);
-    teamManager.teamControls = teamControls;
+    teamManager.setSelectedTeam(selectedTeam);
     
     roomControls = new RoomControls();
     roomControls.setLocation(93, 553);
     roomControls.setSize(183, 3);
     roomControls.setRooms(shipInternals.rooms.subList(0, 12));
-    roomControls.setTeamControls(teamControls);
+    roomControls.setSelectedNode(selectedNode);
   }
 
   @Override

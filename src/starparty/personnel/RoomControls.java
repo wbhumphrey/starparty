@@ -15,23 +15,19 @@ import starparty.library.ShipRoom;
  * @author Tyler
  */
 public class RoomControls {
-  TeamControls teamControls;
   private List<Toggle> buttons;
   private List<ShipRoom> rooms;
   int x;
   int y;
   int columnWidth;
   int columns;
+  NodeSelection node;
   
   private static int PADDING = 8;
   
   public void setLocation(int x, int y) {
     this.x = x;
     this.y = y;
-  }
-  
-  public void setTeamControls(TeamControls teamControls) {
-    this.teamControls = teamControls;
   }
   
   public void setSize(int columnWidth, int columns) {
@@ -57,8 +53,7 @@ public class RoomControls {
               button.selected = false;
           }
           
-          teamControls.setSelectedNode(room.node);
-          System.out.println(room.name);
+          node.set(room.node);
         }
       });
       
@@ -80,5 +75,9 @@ public class RoomControls {
         return true;
     
     return false;
+  }
+
+  void setSelectedNode(NodeSelection selectedNode) {
+    this.node = selectedNode;
   }
 }

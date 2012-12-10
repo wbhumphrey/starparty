@@ -16,8 +16,7 @@ import starparty.library.Team;
  */
 public class TeamManager {
   List<Team> teams;
-  Team selectedTeam;
-  public TeamControls teamControls;
+  TeamSelection selectedTeam;
   
   int x;
   int y;
@@ -45,7 +44,7 @@ public class TeamManager {
       int row = count % 4;
       int column = count / 4;
       
-      if (team == selectedTeam) {
+      if (team == selectedTeam.get()) {
         g.setColor(Color.darkGray);
         g.fillRect(x + 220 * column, y + 38 * row, 220, 38);
         
@@ -69,8 +68,7 @@ public class TeamManager {
       
       r.setBounds(this.x + 220 * column, this.y + 38 * row, 200, 38);
       if (r.contains(x, y)) {
-        selectedTeam = team;
-        teamControls.setSelectedTeam(team);
+        selectedTeam.set(team);
         return true;
       }
       
@@ -78,5 +76,9 @@ public class TeamManager {
     }
     
     return false;
+  }
+
+  void setSelectedTeam(TeamSelection selectedTeam) {
+    this.selectedTeam = selectedTeam;
   }
 }
