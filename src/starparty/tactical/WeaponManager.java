@@ -25,29 +25,16 @@ public class WeaponManager {
   
   List<Weapon> weapons;
   Weapon selectedWeapon;
-  Radar radar;
   Target target;
   FiringControls firingControls;
   
   // Drawing constants
   final int LINE_SIZE = 46;
-  final Color HEAVY_DAMAGE_COLOR = new Color(50, 0, 0);
-  final Color MEDIUM_DAMAGE_COLOR = new Color(50, 50, 0);
-  final Color LIGHT_DAMAGE_COLOR = new Color(0, 50, 0);
   
   // Image buffers
-  Image weaponRange;
-  Image weaponRangeBuffer;
   
-  public WeaponManager(List<Weapon> weapons) {
+  public WeaponManager(List<Weapon> weapons, Target target) {
     this.weapons = weapons;
-  }
-  
-  public void setRadar(Radar radar) {
-    this.radar = radar;
-  }
-  
-  public void setTarget(Target target){
     this.target = target;
   }
   
@@ -78,57 +65,7 @@ public class WeaponManager {
     selectedWeapon = weapons.get(i);
     firingControls.setWeapon(selectedWeapon);
     
-    int width = radar.width;
-    int height = radar.height;
-    
-    try {
-      if (weaponRange == null) {
-          weaponRange = new Image(width, height);
-          weaponRangeBuffer = new Image(width, height);
-      }
-
-      Graphics g = weaponRange.getGraphics();
-      Graphics buffer = weaponRangeBuffer.getGraphics();
-      
-      g.clear();
-
-      Weapon weapon = selectedWeapon;      
-      for (WeaponRange r: weapon.ranges) {
-        buffer.clear();
-
-        if (r.percentDamage < .3)
-          buffer.setColor(LIGHT_DAMAGE_COLOR);
-        else if (r.percentDamage < .6)
-          buffer.setColor(MEDIUM_DAMAGE_COLOR);
-        else
-          buffer.setColor(HEAVY_DAMAGE_COLOR);
-        
-        int radius = (int) (((0.0 + r.max) / radar.maxDistance) * (width / 2));
-        int x = (width / 2) - radius;
-        int y = (width / 2) - radius;
-        
-        buffer.fillOval(x, y, radius * 2, radius * 2);
-        
-        if (r.min > 0) {
-          buffer.setDrawMode(Graphics.MODE_ALPHA_MAP);
-          buffer.setColor(Color.transparent);
-          radius = (int) (((0.0 + r.min) / radar.maxDistance) * (width / 2));
-          x = (width / 2) - radius;
-          y = (width / 2) - radius;
-
-          buffer.fillOval(x, y, radius * 2, radius * 2);
-          buffer.setDrawMode(Graphics.MODE_NORMAL);
-        }
-        
-        buffer.flush();
-        g.drawImage(weaponRangeBuffer, 0, 0);
-      }
-      
-      g.flush();
-      radar.setWeaponRangeImage(weaponRange);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    target.setWeapon(selectedWeapon);
   }
   
   public boolean click(int x, int y) {
