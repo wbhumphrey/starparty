@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +41,7 @@ public class InterstellarObjectRepository {
   }
 
   public static InterstellarObject generatePlanet(String organization) {
-    InterstellarObject o = new InterstellarObject(NameGenerator.generate("planet", "federation"), 0, 0, 0);
+    InterstellarObject o = new InterstellarObject(NameGenerator.generate("planet", "federation"), 0, 0);
     o.type = "Planet";
     o.portrait = ImageLoader.load("interstellar_object/planet/earth.jpg");
     o.icon = ImageLoader.load("interstellar_object/planet/earth_icon.png");
@@ -51,7 +50,7 @@ public class InterstellarObjectRepository {
   }
 
   public static Ship generateShip(String organization) {
-    Ship s = new Ship(NameGenerator.generate("ship", "federation"), 0, 0, 0);
+    Ship s = new Ship(NameGenerator.generate("ship", "federation"), 0, 0);
     s.type = "Scout Ship";
     s.portrait = ImageLoader.load("interstellar_object/ship/scout.png");
     s.icon = ImageLoader.load("interstellar_object/ship/scout_icon.png");
@@ -92,7 +91,7 @@ public class InterstellarObjectRepository {
       ship.name = name;
       ship.portrait = ImageLoader.load("interstellar_object/ship/scout.png");
       ship.icon = ImageLoader.load("interstellar_object/ship/scout_icon.png");
-      ship.setLocation(r.nextFloat() * 500 - 250, r.nextFloat() * 500 - 250, r.nextFloat() * 500 - 250);
+      ship.setLocation(r.nextFloat() * 500 - 250, r.nextFloat() * 500 - 250);
     }
   }
 }

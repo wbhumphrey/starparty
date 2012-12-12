@@ -1,5 +1,6 @@
 package starparty.library;
 
+import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import org.newdawn.slick.Image;
 
@@ -8,13 +9,13 @@ public class InterstellarObject {
   public String name;
   public String type;
   public String organization;
-  private Point3d location = new Point3d();
+  private Point2d location = new Point2d();
   public Image portrait;
   public Image icon;
 
-  public InterstellarObject(String name, double x, double y, double z) {
+  public InterstellarObject(String name, double x, double y) {
     this.name = name;
-    setLocation(x, y, z);
+    setLocation(x, y);
   }
 
   public InterstellarObject() {
@@ -34,14 +35,13 @@ public class InterstellarObject {
     return false;
   }
 
-  public Point3d getLocation() {
+  public Point2d getLocation() {
     return location;
   }
 
-  final public void setLocation(double x, double y, double z) {
+  final public void setLocation(double x, double y) {
     location.x = x;
     location.y = y;
-    location.z = z;
   }
   
 }

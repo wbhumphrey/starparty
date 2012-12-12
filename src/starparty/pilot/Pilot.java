@@ -3,7 +3,7 @@ package starparty.pilot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import javax.vecmath.Point3d;
+import javax.vecmath.Point2d;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -21,7 +21,7 @@ public class Pilot extends BasicGame {
   //Temporary
   List<InterstellarObject> interstellarObjects = new ArrayList<InterstellarObject>();
   //Not Temporary
-  Player player = new Player(0, 0, 0);
+  Player player = new Player(0, 0);
   Viewscreen viewPortXY;
   Viewscreen viewPortYZ;
 
@@ -90,7 +90,7 @@ public class Pilot extends BasicGame {
     
     Random r = new Random();
     for (int i = 1; i <= 1000; i++) {
-      interstellarObjects.add(new InterstellarObject(NameGenerator.generate("ship", "federation"), r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400));
+      interstellarObjects.add(new InterstellarObject(NameGenerator.generate("ship", "federation"), r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400));
     }
   }
 
@@ -98,7 +98,7 @@ public class Pilot extends BasicGame {
   public void update(GameContainer arg0, int delta) throws SlickException {
     // TODO Auto-generated method stub
     if (player.moving) {
-      Point3d location = player.ship.getLocation();
+      Point2d location = player.ship.getLocation();
       if (player.mLeft) {
         player.angle -= player.speed;
       }

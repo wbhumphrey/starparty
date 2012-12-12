@@ -68,9 +68,9 @@ public class Tactical extends BasicGame {
     InterstellarObjectRepository repo = InterstellarObjectRepository.initialize(
             "resources/interstellar_object/interstellar_object_schematic.json");
 
-    player = new Player(0, 0, 0);
+    player = new Player(0, 0);
     player.ship = repo.getShip("Domenica");
-    player.ship.setLocation(0, 0, 0);
+    player.ship.setLocation(0, 0);
             
     interstellarObjects = repo.values();
     interstellarObjects.remove(player.ship);

@@ -4,8 +4,10 @@
  */
 package starparty.utilities;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Point2d;
+import javax.vecmath.Vector2d;
 import starparty.library.InterstellarObject;
+import starparty.library.Ship;
 
 /**
  *
@@ -21,11 +23,18 @@ public class Distance {
   }
   
   public static boolean isDistanceGreaterThan(InterstellarObject o1, InterstellarObject o2, double distance) {
-    Point3d p1 = o1.getLocation();
-    Point3d p2 = o2.getLocation();
+    Point2d p1 = o1.getLocation();
+    Point2d p2 = o2.getLocation();
     return Math.abs(p1.x - p2.x) > distance ||
             Math.abs(p1.y - p2.y) > distance ||
-            Math.abs(p1.z - p2.z) > distance ||
             p1.distance(p2) > distance;
   }
+  
+  public static double angle(Ship s, InterstellarObject target){
+    Point2d sLoc = s.getLocation();
+    Point2d tLoc = target.getLocation();
+    Vector2d targetVector = new Vector2d(sLoc.x - tLoc.x, sLoc.y - tLoc.y);
+    return s.getDirection().angle(targetVector);
+  }
+    
 }

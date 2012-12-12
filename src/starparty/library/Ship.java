@@ -2,6 +2,7 @@ package starparty.library;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.vecmath.Vector2d;
 
 public class Ship extends InterstellarObject {
   private int maxShieldStrength;
@@ -9,9 +10,10 @@ public class Ship extends InterstellarObject {
   public double shieldStrength = -1;
   public double hullStrength = -1;
   public List<Weapon> weapons = new ArrayList<Weapon>();
+  private Vector2d direction = new Vector2d();
 
-  public Ship(String name, float x, float y, float z) {
-    super(name, x, y, z);
+  public Ship(String name, float x, float y) {
+    super(name, x, y);
   }
   
   public Ship(){
@@ -60,5 +62,16 @@ public class Ship extends InterstellarObject {
   public void setMaxHullStrength(int maxHullStrength) {
     this.maxHullStrength = maxHullStrength;
   }
+
+  public Vector2d getDirection() {
+    return direction;
+  }
+
+  public void setDirection(double x, double y) {
+    direction.x = x;
+    direction.y = y;
+  }
+  
+  
 
 }
