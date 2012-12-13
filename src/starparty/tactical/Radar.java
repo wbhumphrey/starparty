@@ -11,6 +11,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Circle;
 import starparty.library.InterstellarObject;
+import starparty.library.Ship;
 import starparty.library.Weapon;
 import starparty.library.WeaponRange;
 import starparty.utilities.Distance;
@@ -43,8 +44,8 @@ public class Radar implements TargetListener {
   final Color MEDIUM_DAMAGE_COLOR = new Color(50, 50, 0);
   final Color LIGHT_DAMAGE_COLOR = new Color(0, 50, 0);
 
-  public Radar(InterstellarObject currentLocation, Collection<InterstellarObject> objects, Target target) {
-    this.source = currentLocation;
+  public Radar(InterstellarObject source, Collection<InterstellarObject> objects, Target target) {
+    this.source = source;
     this.objects = objects;
     this.target = target;
     target.addTargetListener(this);
@@ -145,14 +146,22 @@ public class Radar implements TargetListener {
     drawGrid(g);
     
     g.setColor(Color.red);
+    double angleAdjustment = Math.PI / 2 - source.direction;
     for (InterstellarObject o: objects) {
       double distance = Distance.calculate(source, o);
-      int direction = o.hash(360);
+      double direction = Distance.angle(source, o) + angleAdjustment;
+//      System.out.println(Math.toDegrees(direction));
       
       if (distance < maxDistance && !o.isDestroyed()) {
         double radarDistance = (distance / maxDistance) * (height / 2);
-        double distanceX = Math.cos(Math.toRadians(direction)) * radarDistance;
-        double distanceY = Math.sin(Math.toRadians(direction)) * radarDistance;
+        double distanceX = Math.cos(direction) * radarDistance;
+        double distanceY = -Math.sin(direction) * radarDistance;
+        
+        System.out.println("angleAdjustment: " + Math.toDegrees(angleAdjustment));
+        System.out.println("angle: " + Math.toDegrees(Distance.angle(source, o)));
+        System.out.println("direction: " + Math.toDegrees(direction));
+        System.out.println("distanceX: " + distanceX);
+        System.out.println("distanceY: " + distanceY);
         
         if (o == target.getTarget()) {
           g.setColor(Color.yellow);
@@ -160,7 +169,7 @@ public class Radar implements TargetListener {
           g.setColor(Color.red);
         }
         
-        g.drawImage(o.icon, (int) (centerX - distanceX) - 12, (int) (centerY - distanceY) - 12);
+        g.drawImage(o.icon, (int) (centerX + distanceX) - 12, (int) (centerY + distanceY) - 12);
         // g.fillOval((int) (centerX - distanceX) - (OBJECT_POINT_SIZE / 2), (int) (centerY - distanceY) - (OBJECT_POINT_SIZE / 2), OBJECT_POINT_SIZE, OBJECT_POINT_SIZE);
       }
     }

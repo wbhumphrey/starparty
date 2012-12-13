@@ -91,7 +91,8 @@ public class InterstellarObjectRepository {
       ship.name = name;
       ship.portrait = ImageLoader.load("interstellar_object/ship/scout.png");
       ship.icon = ImageLoader.load("interstellar_object/ship/scout_icon.png");
-      ship.setLocation(r.nextFloat() * 500 - 250, r.nextFloat() * 500 - 250);
+//      ship.setLocation(r.nextFloat() * 500 - 250, r.nextFloat() * 500 - 250);
+      ship.setLocation(250, 250);
     }
   }
 }

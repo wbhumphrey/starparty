@@ -10,7 +10,6 @@ public class Ship extends InterstellarObject {
   public double shieldStrength = -1;
   public double hullStrength = -1;
   public List<Weapon> weapons = new ArrayList<Weapon>();
-  private Vector2d direction = new Vector2d();
 
   public Ship(String name, float x, float y) {
     super(name, x, y);
@@ -62,16 +61,4 @@ public class Ship extends InterstellarObject {
   public void setMaxHullStrength(int maxHullStrength) {
     this.maxHullStrength = maxHullStrength;
   }
-
-  public Vector2d getDirection() {
-    return direction;
-  }
-
-  public void setDirection(double x, double y) {
-    direction.x = x;
-    direction.y = y;
-  }
-  
-  
-
 }

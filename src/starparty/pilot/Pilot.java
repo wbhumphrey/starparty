@@ -103,13 +103,13 @@ public class Pilot extends BasicGame {
         player.angle -= player.speed;
       }
       if (player.mUp) {
-        location.z += player.speed;
+        //location.z += player.speed;
       }
       if (player.mRight) {
         player.angle += player.speed;
       }
       if (player.mDown) {
-        location.z -= player.speed;
+        //location.z -= player.speed;
       }
       location.x += Math.cos(Math.toRadians(player.angle));
       location.y += Math.sin(Math.toRadians(player.angle));

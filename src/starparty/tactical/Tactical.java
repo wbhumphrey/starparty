@@ -101,7 +101,8 @@ public class Tactical extends BasicGame {
 
   @Override
   public void keyPressed(int key, char c) {
-    player.ship.getLocation().x += 20;
+//    player.ship.getLocation().x += 250;
+    player.ship.direction += Math.PI / 4;
   }
 
   @Override

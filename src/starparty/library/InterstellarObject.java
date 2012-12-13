@@ -1,7 +1,7 @@
 package starparty.library;
 
 import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
+import javax.vecmath.Vector2d;
 import org.newdawn.slick.Image;
 
 public class InterstellarObject {
@@ -10,6 +10,9 @@ public class InterstellarObject {
   public String type;
   public String organization;
   private Point2d location = new Point2d();
+  private Vector2d velocity = new Vector2d();
+  public double direction;
+  
   public Image portrait;
   public Image icon;
 
@@ -42,6 +45,15 @@ public class InterstellarObject {
   final public void setLocation(double x, double y) {
     location.x = x;
     location.y = y;
+  }
+  
+  public Vector2d getVelocity() {
+    return velocity;
+  }
+
+  public void setVelocity(double x, double y) {
+    velocity.x = x;
+    velocity.y = y;
   }
   
 }

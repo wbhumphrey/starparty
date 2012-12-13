@@ -30,11 +30,8 @@ public class Distance {
             p1.distance(p2) > distance;
   }
   
-  public static double angle(Ship s, InterstellarObject target){
-    Point2d sLoc = s.getLocation();
-    Point2d tLoc = target.getLocation();
-    Vector2d targetVector = new Vector2d(sLoc.x - tLoc.x, sLoc.y - tLoc.y);
-    return s.getDirection().angle(targetVector);
+  public static double angle(InterstellarObject source, InterstellarObject target){
+    return Math.atan2(target.getLocation().y - source.getLocation().y,
+            target.getLocation().x - source.getLocation().x) ;
   }
-    
 }

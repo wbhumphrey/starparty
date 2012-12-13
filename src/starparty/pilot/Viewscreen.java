@@ -81,8 +81,10 @@ public class Viewscreen {
       if(Distance.isDistanceGreaterThan(player.ship, interstellarObject, range)) {
         continue;
       }
-      Point3d location = player.ship.getLocation();
-      Point3d iLocation = interstellarObject.getLocation();
+//      Point3d location = player.ship.getLocation();
+//      Point3d iLocation = interstellarObject.getLocation();
+      Point3d location = null;
+      Point3d iLocation = null;
       if (iLocation.z > location.z + 50) {
         g.setColor(Color.pink);
       } else if (iLocation.z < location.z - 50) {
