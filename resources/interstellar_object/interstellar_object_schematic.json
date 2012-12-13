@@ -2,17 +2,20 @@
   ships: {
     "Domenica" : {"type": "frigate", "maxShieldStrength": 100, "maxHullStrength": 200,
       "weapons": [
-        {"name":"Phaser", "shieldDamage":100, "hullDamage": 0, "ranges": [
+        {"name":"Phaser", "shieldDamage":100, "hullDamage": 0,
+          "minAngle":-105, "maxAngle":15, "ranges": [
             {"min": 0, "max":100, "percentDamage":1},
-            {"min": 101, "max":200, "percentDamage":.5},
-            {"min": 201, "max":500, "percentDamage":.25}
+            {"min": 100, "max":200, "percentDamage":.5},
+            {"min": 200, "max":500, "percentDamage":.25}
           ], "image": { "path": "tactical/weapons/phaser.png"}},
-        {"name":"Photon Torpedos", "shieldDamage":25, "hullDamage": 100, "shieldDamageReduction": .5, "ranges": [
+        {"name":"Photon Torpedos", "shieldDamage":25, "hullDamage": 100, "shieldDamageReduction": .5, 
+          "minAngle":-15, "maxAngle":105, "ranges": [
             {"min": 200, "max":500, "percentDamage":1}
           ], "image": { "path": "tactical/weapons/phaser.png"}},
-        {"name":"Rail Gun", "shieldDamage":10, "hullDamage": 50, "shieldDamageReduction": 1, "ranges": [
+        {"name":"Rail Gun", "shieldDamage":10, "hullDamage": 50, "shieldDamageReduction": 1,
+          "minAngle":105, "maxAngle":-105, "ranges": [
             {"min": 0, "max":500, "percentDamage":1},
-            {"min": 501, "max":1000, "percentDamage":.5}
+            {"min": 500, "max":1000, "percentDamage":.5}
           ], "image": { "path": "tactical/weapons/phaser.png"}}
       ]},
     "Brigid" : {"type": "cruiser", "maxShieldStrength": 120, "maxHullStrength": 150}

@@ -47,7 +47,10 @@ public class Tactical extends BasicGame {
 
   @Override
   public void render(GameContainer container, Graphics g) throws SlickException {
-    g.drawImage(background, 0, 0);
+//    g.drawImage(background, 0, 0);
+//    g.setColor(basicColor);
+//    g.fillArc(100, 100, 100, 100, 0, 90);
+//    g.fillArc(100, 100, 100, 100, 120, 240);
     radar.draw(g);
     weaponManager.draw(g);
     firingControls.draw(g);

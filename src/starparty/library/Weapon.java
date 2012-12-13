@@ -29,6 +29,8 @@ public class Weapon {
   public int shieldDamage;
   public int hullDamage;
   public double shieldDamageReduction;
+  public int minAngle;
+  public int maxAngle;
 
   public Weapon(String name) {
     this.name = name;
