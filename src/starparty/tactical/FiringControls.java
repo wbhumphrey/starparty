@@ -120,7 +120,7 @@ public class FiringControls implements TargetListener {
     } else if (weapon == null) {
       fireButton.style.backgroundColor = new Color(255, 0, 0);
       fireButton.label = "No Weapon Selected";
-    } else if (weapon.inRange(Distance.calculate(source, target))) {
+    } else if (weapon.inRange(source, target)) {
       fireButton.style.backgroundColor = Tactical.basicColor;
       fireButton.label = "Fire";
     } else {

@@ -90,8 +90,8 @@ public class Radar implements TargetListener {
       }
       weaponRanges.getGraphics().clear();
 
-      int weaponMinAngle = weapon.minAngle - 90;
-      int weaponMaxAngle = weapon.maxAngle - 90;
+      int weaponMinAngle = (int)Math.round(weapon.minAngle.getDegrees() - 90);
+      int weaponMaxAngle = (int)Math.round(weapon.maxAngle.getDegrees() - 90);
 
       for (WeaponRange r : weapon.ranges) {
         if (weaponRange == null) {

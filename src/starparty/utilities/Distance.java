@@ -5,9 +5,7 @@
 package starparty.utilities;
 
 import javax.vecmath.Point2d;
-import javax.vecmath.Vector2d;
 import starparty.library.InterstellarObject;
-import starparty.library.Ship;
 
 /**
  *
@@ -30,8 +28,25 @@ public class Distance {
             p1.distance(p2) > distance;
   }
   
+  /**
+   * @return Returns the angle (in radians) between the source and target object
+   */
   public static double angle(InterstellarObject source, InterstellarObject target){
     return Math.atan2(target.getLocation().y - source.getLocation().y,
             target.getLocation().x - source.getLocation().x) ;
+  }
+  
+  public static boolean isAngleBetween(Angle minAngle, Angle maxAngle, double degrees){
+    double min = minAngle.getDegrees() % 360;
+    double max = maxAngle.getDegrees() % 360;
+    
+    //if min == max, Return true
+    max = (min >= max ? max + 360 : max);
+    
+    degrees %= 360;
+    //if min == degrees, return true
+    degrees = (min > degrees ? degrees + 360 : degrees);
+    
+    return max >= degrees;
   }
 }

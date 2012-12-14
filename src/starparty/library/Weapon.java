@@ -7,6 +7,8 @@ package starparty.library;
 import java.util.ArrayList;
 import java.util.List;
 import org.newdawn.slick.Image;
+import starparty.utilities.Angle;
+import starparty.utilities.Distance;
 import starparty.utilities.ImageLoader;
 
 /**
@@ -29,8 +31,8 @@ public class Weapon {
   public int shieldDamage;
   public int hullDamage;
   public double shieldDamageReduction;
-  public int minAngle;
-  public int maxAngle;
+  public Angle minAngle;
+  public Angle maxAngle;
 
   public Weapon(String name) {
     this.name = name;
@@ -53,10 +55,14 @@ public class Weapon {
     return getCurrentCooldown() == cooldown;
   }
 
-  public boolean inRange(double distance) {
-    for (WeaponRange range : ranges) {
-      if (range.min <= distance && range.max >= distance) {
-        return true;
+  public boolean inRange(InterstellarObject source, InterstellarObject target) {
+    double angle = Distance.angle(source, target);
+    if(Distance.isAngleBetween(minAngle, maxAngle, Math.toDegrees(angle))){
+      double distance = Distance.calculate(source, target);
+      for (WeaponRange range : ranges) {
+        if (range.min <= distance && range.max > distance) {
+          return true;
+        }
       }
     }
     return false;

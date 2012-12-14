@@ -3,7 +3,7 @@
     "Domenica" : {"type": "frigate", "maxShieldStrength": 100, "maxHullStrength": 200,
       "weapons": [
         {"name":"Phaser", "shieldDamage":100, "hullDamage": 0,
-          "minAngle":-105, "maxAngle":15, "ranges": [
+          "minAngle":{"value":-105}, "maxAngle":{"value":15}, "ranges": [
             {"min": 0, "max":100, "percentDamage":1},
             {"min": 100, "max":200, "percentDamage":.5},
             {"min": 200, "max":500, "percentDamage":.25}
