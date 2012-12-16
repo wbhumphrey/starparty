@@ -3,6 +3,7 @@ package starparty.library;
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 import org.newdawn.slick.Image;
+import starparty.utilities.Angle;
 
 public class InterstellarObject {
 
@@ -11,7 +12,7 @@ public class InterstellarObject {
   public String organization;
   private Point2d location = new Point2d();
   private Vector2d velocity = new Vector2d();
-  public double direction;
+  public Angle direction = new Angle();
   
   public Image portrait;
   public Image icon;
@@ -55,5 +56,4 @@ public class InterstellarObject {
     velocity.x = x;
     velocity.y = y;
   }
-  
 }

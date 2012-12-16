@@ -33,19 +33,28 @@ public class Distance {
    */
   public static double angle(InterstellarObject source, InterstellarObject target){
     return Math.atan2(target.getLocation().y - source.getLocation().y,
-            target.getLocation().x - source.getLocation().x) ;
+            target.getLocation().x - source.getLocation().x) 
+            - source.direction.getRadians();
   }
   
   public static boolean isAngleBetween(Angle minAngle, Angle maxAngle, double degrees){
     double min = minAngle.getDegrees() % 360;
     double max = maxAngle.getDegrees() % 360;
     
+    while(min < 0){
+      min += 360;
+    }
+    
     //if min == max, Return true
-    max = (min >= max ? max + 360 : max);
+    while(min >= max){
+      max += 360;
+    }
     
     degrees %= 360;
     //if min == degrees, return true
-    degrees = (min > degrees ? degrees + 360 : degrees);
+    while(min > degrees){
+      degrees += 360;
+    }
     
     return max >= degrees;
   }

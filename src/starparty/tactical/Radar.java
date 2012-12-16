@@ -90,8 +90,10 @@ public class Radar implements TargetListener {
       }
       weaponRanges.getGraphics().clear();
 
-      int weaponMinAngle = (int)Math.round(weapon.minAngle.getDegrees() - 90);
-      int weaponMaxAngle = (int)Math.round(weapon.maxAngle.getDegrees() - 90);
+      //we have to reverse the angle, use the max as min and min as max, 
+      //and subtract 90 degrees to draw with slick
+      int weaponMinAngle = -(int)Math.round(weapon.maxAngle.getDegrees()) - 90;
+      int weaponMaxAngle = -(int)Math.round(weapon.minAngle.getDegrees()) - 90;
 
       for (WeaponRange r : weapon.ranges) {
         if (weaponRange == null) {
@@ -151,31 +153,22 @@ public class Radar implements TargetListener {
     drawGrid(g);
 
     g.setColor(Color.red);
-    double angleAdjustment = Math.PI / 2 - source.direction;
     for (InterstellarObject o : objects) {
       double distance = Distance.calculate(source, o);
-      double direction = Distance.angle(source, o) + angleAdjustment;
-//      System.out.println(Math.toDegrees(direction));
+      double direction = Distance.angle(source, o) + Math.PI / 2;
 
       if (distance < maxDistance && !o.isDestroyed()) {
         double radarDistance = (distance / maxDistance) * (height / 2);
         double distanceX = Math.cos(direction) * radarDistance;
         double distanceY = -Math.sin(direction) * radarDistance;
 
-//        System.out.println("angleAdjustment: " + Math.toDegrees(angleAdjustment));
-//        System.out.println("angle: " + Math.toDegrees(Distance.angle(source, o)));
-//        System.out.println("direction: " + Math.toDegrees(direction));
-//        System.out.println("distanceX: " + distanceX);
-//        System.out.println("distanceY: " + distanceY);
-
         if (o == target.getTarget()) {
           g.setColor(Color.yellow);
-          g.fillOval((int) (centerX - distanceX) - 14, (int) (centerY - distanceY) - 14, 28, 28);
+          g.fillOval((int) (centerX + distanceX) - 14, (int) (centerY + distanceY) - 14, 28, 28);
           g.setColor(Color.red);
         }
 
         g.drawImage(o.icon, (int) (centerX + distanceX) - 12, (int) (centerY + distanceY) - 12);
-        // g.fillOval((int) (centerX - distanceX) - (OBJECT_POINT_SIZE / 2), (int) (centerY - distanceY) - (OBJECT_POINT_SIZE / 2), OBJECT_POINT_SIZE, OBJECT_POINT_SIZE);
       }
     }
   }
@@ -185,14 +178,14 @@ public class Radar implements TargetListener {
 
     for (InterstellarObject o : objects) {
       double distance = Distance.calculate(source, o);
-      int direction = o.hash(360);
+      double direction = Distance.angle(source, o) +  Math.PI / 2;
 
       if (distance < maxDistance) {
         double radarDistance = (distance / maxDistance) * (height / 2);
-        double distanceX = Math.cos(Math.toRadians(direction)) * radarDistance;
-        double distanceY = Math.sin(Math.toRadians(direction)) * radarDistance;
-
-        c.setLocation((int) (centerX - distanceX), (int) (centerY - distanceY));
+        double distanceX = Math.cos(direction) * radarDistance;
+        double distanceY = -Math.sin(direction) * radarDistance;
+        
+        c.setLocation((int) (centerX + distanceX), (int) (centerY + distanceY));
         if (c.contains(x, y)) {
           target.setTarget(o);
           return true;

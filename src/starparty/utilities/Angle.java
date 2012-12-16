@@ -30,4 +30,12 @@ public class Angle {
     return (inDegrees ? value : Math.toDegrees(value));
   }
   
+  public void addRadians(double radians){
+    value += (inDegrees ? Math.toDegrees(radians) : radians);
+  }
+  
+  public void addDegrees(double degrees){
+    value += (inDegrees ? degrees : Math.toRadians(degrees));
+  }
+  
 }

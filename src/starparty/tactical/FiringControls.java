@@ -16,15 +16,14 @@ import starparty.utilities.Distance;
  *
  * @author Tyler
  */
-public class FiringControls implements TargetListener {
+public class FiringControls{
 
   int x;
   int y;
   int width;
   int height;
-  Weapon weapon;
   InterstellarObject source;
-  InterstellarObject target;
+  Target target;
   Button fireButton;
   StatusBar rechargeStatusBar;
   StatusBar damageStatusBar;
@@ -32,8 +31,7 @@ public class FiringControls implements TargetListener {
 
   public FiringControls(InterstellarObject source, Target target) {
     this.source = source;
-    this.target = target.getTarget();
-    target.addTargetListener(this);
+    this.target = target;
   }
 
   public void setLocation(int x, int y) {
@@ -66,8 +64,9 @@ public class FiringControls implements TargetListener {
     fireButton = new Button("Select target") {
       @Override
       public void click() {
-        if (target != null && weapon.canFire()) {
-          weapon.fire(target, Distance.calculate(source, target));
+        if (target.getTarget() != null && target.getWeapon().canFire()) {
+          InterstellarObject t = target.getTarget();
+          target.getWeapon().fire(t, Distance.calculate(source, t));
           System.out.println("Fire!!!");
         }
       }
@@ -77,12 +76,8 @@ public class FiringControls implements TargetListener {
     fireButton.setSize(width - 220, 85);
   }
 
-  public void setWeapon(Weapon weapon) {
-    this.weapon = weapon;
-    updateFireButton();
-  }
-
   public void draw(Graphics g) {
+    Weapon weapon = target.getWeapon();
     if (weapon != null) {
       g.drawImage(weapon.getImage(), x, y);
 
@@ -94,33 +89,25 @@ public class FiringControls implements TargetListener {
       // rechargeStatusBar.draw(g, 0, 100, 100);
       damageStatusBar.draw(g, 0, 100, 100);
       powerStatusBar.draw(g, 0, 100, 100);
-
+      
+      updateFireButton();
       fireButton.draw(g);
     }
   }
 
   public boolean click(int x, int y) {
-    if (weapon != null) {
+    if (target.getWeapon() != null) {
       return fireButton.click(x, y);
     }
 
     return false;
   }
 
-  @Override
-  public void targetChanged(Target newTarget) {
-    target = newTarget.getTarget();
-    updateFireButton();
-  }
-
   public void updateFireButton() {
-    if (target == null) {
+    if (target.getTarget() == null) {
       fireButton.style.backgroundColor = new Color(255, 0, 0);
       fireButton.label = "Select Target";
-    } else if (weapon == null) {
-      fireButton.style.backgroundColor = new Color(255, 0, 0);
-      fireButton.label = "No Weapon Selected";
-    } else if (weapon.inRange(source, target)) {
+    } else if (target.getWeapon().inRange(source, target.getTarget())) {
       fireButton.style.backgroundColor = Tactical.basicColor;
       fireButton.label = "Fire";
     } else {

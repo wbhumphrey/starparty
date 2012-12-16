@@ -26,7 +26,6 @@ public class WeaponManager {
   List<Weapon> weapons;
   Weapon selectedWeapon;
   Target target;
-  FiringControls firingControls;
   
   // Drawing constants
   final int LINE_SIZE = 46;
@@ -63,8 +62,6 @@ public class WeaponManager {
   
   public void select(int i) {
     selectedWeapon = weapons.get(i);
-    firingControls.setWeapon(selectedWeapon);
-    
     target.setWeapon(selectedWeapon);
   }
   
@@ -93,9 +90,5 @@ public class WeaponManager {
   public void setSize(int width, int height) {
     this.width = width;
     this.height = height;
-  }
-
-  void setFiringControls(FiringControls firingControls) {
-    this.firingControls = firingControls;
   }
 }

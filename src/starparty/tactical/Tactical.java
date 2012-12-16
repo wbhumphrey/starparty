@@ -47,10 +47,7 @@ public class Tactical extends BasicGame {
 
   @Override
   public void render(GameContainer container, Graphics g) throws SlickException {
-//    g.drawImage(background, 0, 0);
-//    g.setColor(basicColor);
-//    g.fillArc(100, 100, 100, 100, 0, 90);
-//    g.fillArc(100, 100, 100, 100, 120, 240);
+    g.drawImage(background, 0, 0);
     radar.draw(g);
     weaponManager.draw(g);
     firingControls.draw(g);
@@ -85,7 +82,6 @@ public class Tactical extends BasicGame {
     weaponManager = new WeaponManager(player.ship.weapons, target);
     weaponManager.setLocation(120, 100);
     weaponManager.setSize(300, 600);
-    weaponManager.setFiringControls(firingControls);
 
     objectStatus = new InterstellarObjectStatus(target);
     objectStatus.setLocation(608, 540);
@@ -104,8 +100,20 @@ public class Tactical extends BasicGame {
 
   @Override
   public void keyPressed(int key, char c) {
-//    player.ship.getLocation().x += 250;
-    player.ship.direction += Math.PI / 4;
+    switch(key){
+      case Input.KEY_UP:
+        player.ship.getLocation().x += 25;
+        break;
+      case Input.KEY_DOWN:
+        player.ship.getLocation().x -= 25;
+        break;
+      case Input.KEY_LEFT:
+        player.ship.direction.addDegrees(45);
+        break;
+      case Input.KEY_RIGHT:
+        player.ship.direction.addDegrees(-45);
+        break;
+    }
   }
 
   @Override
