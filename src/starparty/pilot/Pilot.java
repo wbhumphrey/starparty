@@ -31,6 +31,7 @@ public class Pilot extends BasicGame {
   Ship ship;
   Point center;
   List<InterstellarObject> objects;
+  Starfield starfield;
 
   public Pilot() {
     super("starparty");
@@ -55,6 +56,8 @@ public class Pilot extends BasicGame {
   Shape shape = new Polygon(new float[]{0, 4, -8, 8, 0, -10, 8, 8});
   @Override
   public void render(GameContainer container, Graphics g) throws SlickException {
+    starfield.draw(g);
+    
     g.setColor(Color.red);
     g.drawString("theta: " + Math.round(ship.direction.getDegrees()), 10, 25);
     g.drawString("speed: " + Distance.magnitude(ship.getVelocity().x, ship.getVelocity().y), 10, 40);
@@ -86,6 +89,11 @@ public class Pilot extends BasicGame {
     objects = new ArrayList<InterstellarObject>();
     objects.add(o = InterstellarObjectRepository.generatePlanet("federation"));
     o.setLocation(0, 250);
+    
+    starfield = new Starfield(ship);
+    starfield.setLocation(0,0);
+    starfield.setSize(1024, 700);
+    starfield.init();
   }
 
   @Override

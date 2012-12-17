@@ -2,7 +2,6 @@ package starparty.library;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.vecmath.Vector2d;
 
 public class Ship extends InterstellarObject {
   private int maxShieldStrength;

@@ -4,10 +4,8 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 import org.newdawn.slick.Image;
 import starparty.utilities.Angle;
-import starparty.utilities.Distance;
 
 public class InterstellarObject {
-
   public String name;
   public String type;
   public String organization;
@@ -16,6 +14,9 @@ public class InterstellarObject {
   public Angle direction = new Angle();
   public Image portrait;
   public Image icon;
+  
+  float acceleration = 10000;
+  float turnSpeed = 15;
 
   public InterstellarObject(String name, double x, double y) {
     this.name = name;
@@ -63,8 +64,8 @@ public class InterstellarObject {
   }
 
   public void accelerate(int delta) {
-    velocity.x += (float) Math.cos(direction.getRadians()) * (delta / 5000.0f);
-    velocity.y += (float) Math.sin(direction.getRadians()) * (delta / 5000.0f);
+    velocity.x += (float) Math.cos(direction.getRadians()) * (delta / acceleration);
+    velocity.y += (float) Math.sin(direction.getRadians()) * (delta / acceleration);
   }
 
   public void decelerate(int delta) {
@@ -72,23 +73,24 @@ public class InterstellarObject {
   }
 
   public void brake(int delta) {
-    double angle = Distance.angle(this) - Math.PI;
-    
-    velocity.x += (float) Math.cos(angle) * (delta / 5000.0f);
-    velocity.y += (float) Math.sin(angle) * (delta / 5000.0f);
-    
-    if (velocity.x < .01)
+    if (velocity.length() < .03) {
       velocity.x = 0;
-    
-    if (velocity.y < .01)
       velocity.y = 0;
+      
+      return;
     }
+    
+    double angle = Math.atan2(velocity.y, velocity.x) + Math.PI;
+
+    velocity.x += (float) Math.cos(angle) * (delta / acceleration);
+    velocity.y += (float) Math.sin(angle) * (delta / acceleration);
+  }
 
   public void rotateCCW(int delta) {
-    direction.addDegrees(-(delta / 10.0f));
+    direction.addDegrees(-(delta / turnSpeed));
   }
 
   public void rotateCW(int delta) {
-    direction.addDegrees(delta / 10.0f);
+    direction.addDegrees(delta / turnSpeed);
   }
 }

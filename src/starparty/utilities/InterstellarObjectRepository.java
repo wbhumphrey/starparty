@@ -44,7 +44,7 @@ public class InterstellarObjectRepository {
     InterstellarObject o = new InterstellarObject(NameGenerator.generate("planet", "federation"), 0, 0);
     o.type = "Planet";
     o.portrait = ImageLoader.load("interstellar_object/planet/earth.jpg");
-    o.icon = ImageLoader.load("interstellar_object/planet/earth_icon.png");
+    o.icon = ImageLoader.load("interstellar_object/planet/honeycomb_icon.png");
 
     return o;
   }
