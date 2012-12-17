@@ -1,63 +1,40 @@
+ /*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package starparty.pilot;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
-import javax.vecmath.Point2d;
-
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
-
+import java.util.Set;
+import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Point;
+import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Transform;
 import starparty.library.InterstellarObject;
 import starparty.library.Player;
-import starparty.utilities.NameGenerator;
+import starparty.library.Ship;
+import starparty.utilities.Distance;
+import starparty.utilities.FontLoader;
+import starparty.utilities.InterstellarObjectRepository;
 
+/**
+ *
+ * @author Tyler
+ */
 public class Pilot extends BasicGame {
-
-  static int kLEFT = 203, kUP = 200, kRIGHT = 205, kDOWN = 208, kSPACE = 57;
-  //Temporary
-  List<InterstellarObject> interstellarObjects = new ArrayList<InterstellarObject>();
-  //Not Temporary
-  Player player = new Player(0, 0);
-  Viewscreen viewPortXY;
-  Viewscreen viewPortYZ;
+  public static UnicodeFont smallFont;
+  
+  Player player;
+  Ship ship;
+  Point center;
+  List<InterstellarObject> objects;
 
   public Pilot() {
-    super("StarParty");
+    super("starparty");
     // TODO Auto-generated constructor stub
-  }
-
-  public void keyPressed(int keyCode, char c) {
-    if (keyCode == kLEFT) {
-      player.mLeft = true;
-    } else if (keyCode == kUP) {
-      player.mUp = true;
-    } else if (keyCode == kRIGHT) {
-      player.mRight = true;
-    } else if (keyCode == kDOWN) {
-      player.mDown = true;
-    } else if (keyCode == kSPACE) {
-      player.moving = true;
-    }
-    super.keyPressed(keyCode, c);
-  }
-
-  public void keyReleased(int keyCode, char c) {
-    if (keyCode == kLEFT) {
-      player.mLeft = false;
-    } else if (keyCode == kUP) {
-      player.mUp = false;
-    } else if (keyCode == kRIGHT) {
-      player.mRight = false;
-    } else if (keyCode == kDOWN) {
-      player.mDown = false;
-    } else if (keyCode == kSPACE) {
-      player.moving = false;
-    }
-    super.keyReleased(keyCode, c);
   }
 
   public static void main(String... args) {
@@ -75,46 +52,69 @@ public class Pilot extends BasicGame {
     }
   }
 
+  Shape shape = new Polygon(new float[]{0, 4, -8, 8, 0, -10, 8, 8});
   @Override
-  public void render(GameContainer container, Graphics screen) throws SlickException {
-    // TODO Auto-generated method stub
-    viewPortXY.draw(screen);
-    viewPortYZ.draw(screen);
+  public void render(GameContainer container, Graphics g) throws SlickException {
+    g.setColor(Color.red);
+    g.drawString("theta: " + Math.round(ship.direction.getDegrees()), 10, 25);
+    g.drawString("speed: " + Distance.magnitude(ship.getVelocity().x, ship.getVelocity().y), 10, 40);
+    g.drawString("x: " + Math.round(ship.getLocation().x), 10, 55);
+    g.drawString("y: " + Math.round(ship.getLocation().y), 10, 70);
+    
+    for (InterstellarObject o: objects) {
+      int drawX = (int) (center.getX() + (o.getLocation().x - ship.getLocation().x));
+      int drawY = (int) (center.getY() - (o.getLocation().y - ship.getLocation().y));
+      g.drawImage(o.icon, drawX, drawY);
+    }
+    
+    Transform t = Transform.createTranslateTransform(center.getX(), center.getY());
+    Transform a = Transform.createRotateTransform((float) -(ship.direction.getRadians() - (Math.PI / 2)), center.getX(), center.getY());
+    g.setColor(Color.cyan);
+    g.fill(shape.transform(t).transform(a));
   }
 
   @Override
   public void init(GameContainer arg0) throws SlickException {
-    // TODO Auto-generated method stub
-    viewPortXY = new Viewscreen(player, 10, 10, 400, 400, true, interstellarObjects);
-    viewPortYZ = new Viewscreen(player, 520, 10, 400, 400, false, interstellarObjects);
+    smallFont = FontLoader.load("TCM_____.TTF", 15);
     
-    Random r = new Random();
-    for (int i = 1; i <= 1000; i++) {
-      interstellarObjects.add(new InterstellarObject(NameGenerator.generate("ship", "federation"), r.nextFloat() * 800 - 400, r.nextFloat() * 800 - 400));
-    }
+    center = new Point(1024 / 2, 700 / 2);
+    player = new Player(0, 0);
+    ship = player.ship;
+    ship.direction.setRadians(Math.PI / 2);
+    
+    InterstellarObject o;
+    objects = new ArrayList<InterstellarObject>();
+    objects.add(o = InterstellarObjectRepository.generatePlanet("federation"));
+    o.setLocation(0, 250);
   }
 
   @Override
-  public void update(GameContainer arg0, int delta) throws SlickException {
-    // TODO Auto-generated method stub
-    if (player.moving) {
-      Point2d location = player.ship.getLocation();
-      if (player.mLeft) {
-        player.angle -= player.speed;
-      }
-      if (player.mUp) {
-        //location.z += player.speed;
-      }
-      if (player.mRight) {
-        player.angle += player.speed;
-      }
-      if (player.mDown) {
-        //location.z -= player.speed;
-      }
-      location.x += Math.cos(Math.toRadians(player.angle));
-      location.y += Math.sin(Math.toRadians(player.angle));
+  public void update(GameContainer gc, int delta) throws SlickException {
+    if (keyStates.contains(Input.KEY_LEFT)) {
+      ship.rotateCW(delta);
+    } else if (keyStates.contains(Input.KEY_RIGHT)) {
+      ship.rotateCCW(delta);
     }
-    //System.out.println(player.y);
+    
+    if (keyStates.contains(Input.KEY_SPACE)) {
+      ship.brake(delta);
+    }
+    
+    if (keyStates.contains(Input.KEY_UP)) {
+      ship.accelerate(delta);
+    }
+    
+    ship.update(delta);
+  }
+  Set<Integer> keyStates = new HashSet<Integer>();
 
+  @Override
+  public void keyPressed(int key, char c) {
+    keyStates.add(key);
+  }
+
+  @Override
+  public void keyReleased(int key, char c) {
+    keyStates.remove(key);
   }
 }

@@ -12,6 +12,10 @@ import starparty.library.InterstellarObject;
  * @author Tyler
  */
 public class Distance {
+  public static double magnitude(double x, double y) {
+    return Math.sqrt(x * x + y * y);
+  }
+  
   public static double calculate(double x1, double y1, double z1, double x2, double y2, double z2) {
     return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
   }
@@ -27,14 +31,15 @@ public class Distance {
             Math.abs(p1.y - p2.y) > distance ||
             p1.distance(p2) > distance;
   }
+
+  public static double angle(InterstellarObject o) {
+    return Math.atan2(o.getLocation().y, o.getLocation().x);
+  }
   
-  /**
-   * @return Returns the angle (in radians) between the source and target object
-   */
   public static double angle(InterstellarObject source, InterstellarObject target){
-    return Math.atan2(target.getLocation().y - source.getLocation().y,
-            target.getLocation().x - source.getLocation().x) 
-            - source.direction.getRadians();
+    double deltaY = target.getLocation().y - source.getLocation().y;
+    double deltaX = target.getLocation().x - source.getLocation().x;
+    return Math.atan2(deltaY, deltaX) - source.direction.getRadians();
   }
   
   public static boolean isAngleBetween(Angle minAngle, Angle maxAngle, double degrees){
