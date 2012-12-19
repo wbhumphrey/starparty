@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.newdawn.slick.*;
-import starparty.library.*;
+import starparty.Sector;
+import starparty.Station;
+import starparty.library.InterstellarObject;
+import starparty.library.Player;
+import starparty.library.Weapon;
 import starparty.utilities.FontLoader;
 import starparty.utilities.InterstellarObjectRepository;
 
-public class Tactical extends BasicGame {
-
+public class Tactical extends Station {
+  Sector sector;
+  
   Collection<InterstellarObject> interstellarObjects = new ArrayList<InterstellarObject>();
   List<Weapon> weapons = new ArrayList<Weapon>();
   Player player;
@@ -27,26 +32,12 @@ public class Tactical extends BasicGame {
   public static UnicodeFont basicFont;
   public static UnicodeFont smallFont;
 
-  public Tactical() {
-    super("StarParty");
-  }
-
-  public static void main(String... args) {
-    try {
-      AppGameContainer app = new AppGameContainer(new Tactical());
-      app.setDisplayMode(1024, 700, false);
-      app.setSmoothDeltas(true);
-      app.setTargetFrameRate(60);
-      app.setShowFPS(true);
-      app.start();
-    } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+  public Tactical(Sector sector) {
+    this.sector = sector;
   }
 
   @Override
-  public void render(GameContainer container, Graphics g) throws SlickException {
+  public void draw(Graphics g) {
     g.drawImage(background, 0, 0);
     radar.draw(g);
     weaponManager.draw(g);
@@ -65,15 +56,9 @@ public class Tactical extends BasicGame {
     titleFont = FontLoader.load("TCM_____.TTF", 35, true);
     smallFont = FontLoader.load("TCM_____.TTF", 15);
     
-    InterstellarObjectRepository repo = InterstellarObjectRepository.initialize(
-            "resources/interstellar_object/interstellar_object_schematic.json");
-
-    player = new Player(0, 0);
-    player.ship = repo.getShip("Domenica");
-    player.ship.setLocation(0, 0);
+    player = sector.player;
             
-    interstellarObjects = repo.values();
-    interstellarObjects.remove(player.ship);
+    interstellarObjects = sector.interstellarObjects;
 
     firingControls = new FiringControls(player.ship, target);
     firingControls.setLocation(107, 473);
@@ -95,7 +80,7 @@ public class Tactical extends BasicGame {
   }
 
   @Override
-  public void update(GameContainer gc, int delta) throws SlickException {
+  public void update(int delta) {
   }
 
   @Override

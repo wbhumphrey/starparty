@@ -18,6 +18,9 @@
             {"min": 500, "max":1000, "percentDamage":.5}
           ], "image": { "path": "tactical/weapons/phaser.png"}}
       ]},
-    "Brigid" : {"type": "cruiser", "maxShieldStrength": 120, "maxHullStrength": 150}
+    "Brigid" : {"type": "cruiser", "maxShieldStrength": 120, "maxHullStrength": 150},
+    "Loser" : {"type": "cruiser", "maxShieldStrength": 120, "maxHullStrength": 150},
+    "Wompus" : {"type": "cruiser", "maxShieldStrength": 120, "maxHullStrength": 150},
+    "Har Har" : {"type": "cruiser", "maxShieldStrength": 120, "maxHullStrength": 150}
   }
 }

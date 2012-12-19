@@ -13,6 +13,8 @@ import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
+import starparty.Sector;
+import starparty.Station;
 import starparty.library.InterstellarObject;
 import starparty.library.Player;
 import starparty.library.Ship;
@@ -24,38 +26,23 @@ import starparty.utilities.InterstellarObjectRepository;
  *
  * @author Tyler
  */
-public class Pilot extends BasicGame {
+public class Pilot extends Station {
+  public static Sector sector;
+  private Ship ship;
+  private Player player;
   public static UnicodeFont smallFont;
   
-  Player player;
-  Ship ship;
   Point center;
   List<InterstellarObject> objects;
   Starfield starfield;
 
-  public Pilot() {
-    super("starparty");
-    // TODO Auto-generated constructor stub
-  }
-
-  public static void main(String... args) {
-    try {
-      System.out.println(new java.io.File(".").getCanonicalPath());
-      AppGameContainer app = new AppGameContainer(new Pilot());
-      app.setDisplayMode(1024, 700, false);
-      app.setSmoothDeltas(true);
-      app.setTargetFrameRate(60);
-      app.setShowFPS(true);
-      app.start();
-    } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+  public Pilot(Sector sector) {
+    this.sector = sector;
   }
 
   Shape shape = new Polygon(new float[]{0, 4, -8, 8, 0, -10, 8, 8});
   @Override
-  public void render(GameContainer container, Graphics g) throws SlickException {
+  public void draw(Graphics g) {
     starfield.draw(g);
     
     g.setColor(Color.red);
@@ -81,14 +68,12 @@ public class Pilot extends BasicGame {
     smallFont = FontLoader.load("TCM_____.TTF", 15);
     
     center = new Point(1024 / 2, 700 / 2);
-    player = new Player(0, 0);
+    player = sector.player;
     ship = player.ship;
     ship.direction.setRadians(Math.PI / 2);
     
     InterstellarObject o;
-    objects = new ArrayList<InterstellarObject>();
-    objects.add(o = InterstellarObjectRepository.generatePlanet("federation"));
-    o.setLocation(0, 250);
+    objects = sector.interstellarObjects;
     
     starfield = new Starfield(ship);
     starfield.setLocation(0,0);
@@ -97,7 +82,7 @@ public class Pilot extends BasicGame {
   }
 
   @Override
-  public void update(GameContainer gc, int delta) throws SlickException {
+  public void update(int delta) {
     if (keyStates.contains(Input.KEY_LEFT)) {
       ship.rotateCW(delta);
     } else if (keyStates.contains(Input.KEY_RIGHT)) {
@@ -111,8 +96,6 @@ public class Pilot extends BasicGame {
     if (keyStates.contains(Input.KEY_UP)) {
       ship.accelerate(delta);
     }
-    
-    ship.update(delta);
   }
   Set<Integer> keyStates = new HashSet<Integer>();
 
